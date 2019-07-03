@@ -5,27 +5,13 @@
 
 import face_recognition as FR
 import numpy as np
+from face_encoding import FaceEncoding
 
 
 class FaceRecogniser:
     def __init__(self):
         self._names = []
         self._encodings = []
-
-    @staticmethod
-    def encode_face(img_path):
-        """
-            Get encoding of the face in the given image
-        :param img_path: path to image of face
-        :return: encoding of face in image, if no face found, raise error and finish
-        """
-        try:
-            img_file = FR.load_image_file(file=img_path)
-            face_encoding = FR.face_encodings(face_image=img_file)[0]
-            return face_encoding
-        except IndexError:
-            print('--FaceRecognitionErr: No face detected in given image.')
-            quit()
 
     def recognise_face(self, img_path):
         """
@@ -35,7 +21,7 @@ class FaceRecogniser:
         :return: name/user ID of the person if existing in database, else 'Unknown'
         """
         # Get face encoding from image
-        face_encoding = self.encode_face(img_path=img_path)
+        face_encoding = FaceEncoding.encode_face(img_path=img_path)
 
         # Find face match from list of known faces
         matches = FR.compare_faces(known_face_encodings=self._encodings,
