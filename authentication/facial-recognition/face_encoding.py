@@ -46,8 +46,3 @@ class FaceEncoder:
         :return: None, but face_db.csv file is created in the same directory
         """
         self._faces_df.to_csv('face_db.csv', index=False)
-
-
-if __name__ == '__main__':
-    face_encoder = FaceEncoder()
-    face_encoder.save_as_csv()
