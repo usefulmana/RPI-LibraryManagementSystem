@@ -9,19 +9,18 @@ class Login:
 
     def login(self):
         while True:
-            self.curs.execute("SELECT username, password FROM users")
+            self.curs.execute("SELECT email, password FROM library_users")
             data = self.curs.fetchall()
-            username = input("Username: ")
+            email = input("Email: ")
             password = input("Password: ").encode("utf-8")
             for row in data:
-                if username == row[0]:
+                if email == row[0]:
                     if bcrypt.checkpw(password, row[1].encode()):
-                        password = " "
                         print("You've successfully logged in")
+                        password = " "
                         break
             if password != " ":
                 print("Incorrect username or password")
                 continue
             else:
                 break
-

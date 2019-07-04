@@ -7,25 +7,26 @@ class ValidateInput:
         self.conn = MySQLdb.connect("localhost", db_username, db_password, database)
         self.curs = self.conn.cursor()
 
-    def validate_username(self):
+    def validate_email(self):
         while True:
-            username = input("Username: ")
-            self.curs.execute("SELECT username FROM users")
+            self.curs.execute("SELECT email FROM library_users")
             data = self.curs.fetchall()
-            if re.search("\s", username):
-                print("Username should not contain spaces")
+            email = input("Email: ")
+            if not email.endswith("@gmail.com"):
+                print("You can only use gmail to register and login")
                 continue
             for row in data:
                 if row is None:
                     break
-                elif username.lower() == row[0].lower():
-                    print("Username already exists")
-                    username = " "
-            if username == " ":
+                elif email == row[0]:
+                    print("This email has already been used to register")
+                    email = " "
+                    break
+            if email == " ":
                 continue
             else:
                 break
-        return username
+        return email
 
     def validate_password(self):
         message = """Password must contain at least 8 characters
@@ -37,7 +38,7 @@ class ValidateInput:
         print(message)
         while True:
             password = input("Password: ")
-            if len(password) < 8 or not re.search("[a-z]", password) or not re.search("[A-Z]", password) or not re.search("[0-9]", password) or not re.search("[~!@#$%^&*+-_.:;,?<>]", password) or re.search("\s", password):
+            if len(password) < 8 or len(password) > 32 or not re.search("[a-z]", password) or not re.search("[A-Z]", password) or not re.search("[0-9]", password) or not re.search("[~!@#$%^&*+-_.:;,?<>]", password) or re.search("\s", password):
                 print(message)
                 continue
             break
