@@ -12,5 +12,5 @@ class Register(ValidateInput):
         hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
         self.curs.execute("INSERT INTO users VALUES (%s, %s, %s, %s, %s)", (username, first_name, last_name, email, hashed_password,))
         self.conn.commit()
+        print("You've successfully registered")
         self.conn.close()
-        return "You've successfully registered"
