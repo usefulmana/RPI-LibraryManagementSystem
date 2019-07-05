@@ -6,7 +6,6 @@
 import face_recognition as FR
 import numpy as np
 import pandas as pd
-import os
 from face_encoding import FaceEncoder
 
 
@@ -15,15 +14,19 @@ class FaceRecogniser:
         self._names, self._encodings = self.load_face_encodings()
         self.load_face_encodings()
 
-    def recognise_face(self, img_path):
+        # Print out data summary
+        print('Database contains {} people'.format(len(self._names)))
+
+    def recognise_face(self, img, path=True):
         """
             Check if the person in image is within the member database
             using face recognition
-        :param img_path: path to image of face
+        :param img: input image or path to image
+        :param path: boolean whether input an image file or path to image file
         :return: name/user ID of the person if existing in database, else 'Unknown'
         """
         # Get face encoding from image
-        face_encoding = FaceEncoder.encode_face(img_path=img_path)
+        face_encoding = FaceEncoder.encode_face(img=img, path=path)
 
         # Find face match from list of known faces
         matches = FR.compare_faces(known_face_encodings=self._encodings,
@@ -48,7 +51,8 @@ class FaceRecogniser:
 
             return name
 
-    def load_face_encodings(self):
+    @staticmethod
+    def load_face_encodings():
         """
             Load information including person's name and face encoding from CSV file
         :return: lists of names and face encodings
@@ -67,16 +71,14 @@ class FaceRecogniser:
             encoding_float = [float(x) for x in encoding_split]
             encodings.append(encoding_float)
 
-        # Print out data summary
-        print('Database contains {} people'.format(len(self._names)))
         return names, encodings
 
 
-if __name__ == '__main__':
-    face_recogniser = FaceRecogniser()
-
-    # Test with data from test folder
-    file_names = os.listdir(path='imgs/test/')
-    for file_name in file_names:
-        recognised = face_recogniser.recognise_face('imgs/test/{}'.format(file_name))
-        print('Ground truth: {} - Recognised: {}'.format(file_name, recognised))
+# if __name__ == '__main__':
+#     face_recogniser = FaceRecogniser()
+#
+#     # Test with data from test folder
+#     file_names = os.listdir(path='imgs/test/')
+#     for file_name in file_names:
+#         recognised = face_recogniser.recognise_face('imgs/test/{}'.format(file_name))
+#         print('Ground truth: {} - Recognised: {}'.format(file_name, recognised))
