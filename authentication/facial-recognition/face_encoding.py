@@ -9,15 +9,16 @@ class FaceEncoder:
         self._faces_df = pd.DataFrame(columns=['name', 'img_path', 'encodings'])
 
     @staticmethod
-    def encode_face(img_path):
+    def encode_face(img, path=True):
         """
             Get encoding of the face in the given image
-        :param img_path: path to image of face
+        :param img: path to image of face
         :return: encoding of face in image, if no face found, raise error and finish
         """
         try:
-            img_file = FR.load_image_file(file=img_path)
-            face_encoding = FR.face_encodings(face_image=img_file)[0]
+            if path:
+                img = FR.load_image_file(file=img)
+            face_encoding = FR.face_encodings(face_image=img)[0]
             return face_encoding
         except IndexError:
             print('--FaceRecognitionErr: No face detected in given image.')
