@@ -22,6 +22,7 @@ class Parser:
             self._USER = configs['user']
             self._PASSWORD = configs['password']
             self._DATABASE = configs['database']
+            self._SECRET = configs["secret_key"]
             self._DAYS_TO_RETURN = configs["days_to_return_book"]
 
     @property
@@ -44,4 +45,7 @@ class Parser:
     def days_to_return(self):
         return self._DAYS_TO_RETURN
 
+    @property
+    def secret(self):
+        return self._SECRET
 

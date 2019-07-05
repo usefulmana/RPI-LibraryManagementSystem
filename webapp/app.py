@@ -1,7 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS, cross_origin
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, make_response
+
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -11,6 +12,9 @@ db = SQLAlchemy(app)
 from book_routes import *
 from user_routes import *
 from borrowed_books_routes import *
+from app_routes import *
+from admin_routes import *
+
 
 if __name__ == '__main__':
     db.create_all()

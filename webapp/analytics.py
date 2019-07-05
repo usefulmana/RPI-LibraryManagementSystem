@@ -79,6 +79,7 @@ class Analytics:
             file.close()
 
 
-anal = Analytics.get_instance()
-anal.get_statistics_for_a_day()
-anal.get_statistics_for_a_week()
+if __name__ == '__main__':
+    anal = Analytics.get_instance()
+    anal.get_statistics_for_a_day()
+    anal.get_statistics_for_a_week()

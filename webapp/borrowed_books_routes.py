@@ -80,13 +80,3 @@ def get_borrow_history_of_a_user(user_id):
 
     return jsonify(result)
 
-
-# @app.route('/borrow', methods=['GET'])
-# @cross_origin()
-# def get_statistics_of_a_day(number_of_day=0):
-#     day = datetime.now()
-#     borrows = BorrowedBooks.query.filter(
-#         BorrowedBooks.borrow_date == day and BorrowedBooks.status == 'borrowed').count()
-#     # returns = BorrowedBooks.query.filter(
-#     #     BorrowedBooks.borrow_date == day and BorrowedBooks.status == 'returned').count()
-#     return borrows

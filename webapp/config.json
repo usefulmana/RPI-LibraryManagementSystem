@@ -3,5 +3,6 @@
   "user": "pi",
   "password": "GAtech321",
   "database": "piot_a2",
-  "days_to_return_book": 7
+  "days_to_return_book": 7,
+  "secret_key": "my_secret"
 }

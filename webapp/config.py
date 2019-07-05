@@ -8,3 +8,5 @@ USER = data['user']
 PASSWORD = data['password']
 DATABASE = data['database']
 SQLALCHEMY_DATABASE_URI = "mysql://{}:{}@{}/{}".format(USER, PASSWORD, HOST, DATABASE)
+BASIC_AUTH_USERNAME = 'rmit'
+BASIC_AUTH_PASSWORD = '123456'
