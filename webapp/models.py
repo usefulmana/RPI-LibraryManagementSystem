@@ -5,13 +5,9 @@ from flask import Flask, request
 import datetime
 
 app = Flask(__name__)
+app.config.from_pyfile('config.py')
 cors = CORS(app)
 ma = Marshmallow()
-HOST = "35.198.230.96"
-USER = "pi"
-PASSWORD = "GAtech321"
-DATABASE = "piot_a2"
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://{}:{}@{}/{}".format(USER, PASSWORD, HOST, DATABASE)
 db = SQLAlchemy(app)
 
 
@@ -50,20 +46,17 @@ def add_book():
     return book_Schema.jsonify(new_book)
 
 
-@app.route('/books/<id>', method=['DELETE'])
+@app.route('/books/<id>', methods=['DELETE'])
 @cross_origin()
 def delete_book(id):
     book = Book.query.get(id)
     db.session.delete(book)
-
-
-
     db.session.commit()
 
     return book_Schema.jsonify(book)
 
 db.create_all()
-app.run(debug=True)
+app.run()
 # class Users(db.Model):
 #     __tablename__ = "users"
 #     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
