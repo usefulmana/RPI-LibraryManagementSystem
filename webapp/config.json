@@ -2,5 +2,6 @@
   "host": "35.198.230.96",
   "user": "pi",
   "password": "GAtech321",
-  "database": "piot_a2"
+  "database": "piot_a2",
+  "days_to_return_book": 7
 }

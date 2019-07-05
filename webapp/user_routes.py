@@ -6,6 +6,7 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_email = db.Column(db.String(255), unique=True)
     name = db.Column(db.Text)
+    borrowed_books = db.relationship('BorrowedBooks')
 
     def __init__(self, email, name):
         self.user_email = email
@@ -14,7 +15,7 @@ class Users(db.Model):
 
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ('user_id', "user_email", "name")
+        fields = ('id', "user_email", "name")
 
 
 user_schema = UserSchema()

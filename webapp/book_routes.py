@@ -8,7 +8,7 @@ class Book(db.Model):
     author = db.Column(db.Text)
     ISBN = db.Column(db.Text)
     published_date = db.Column(db.Date)
-    # borrowed_books = db.relationship('BorrowedBooks', backref='book_id')
+    borrowed_books = db.relationship('BorrowedBooks')
 
     def __init__(self, title, author, ISBN, published_date):
         self.title = title
@@ -19,7 +19,7 @@ class Book(db.Model):
 
 class BookSchema(ma.Schema):
     class Meta:
-        fields = ("book_id", "title", "author", "ISBN", "published_date")
+        fields = ("id", "title", "author", "ISBN", "published_date")
 
 
 book_Schema = BookSchema()
