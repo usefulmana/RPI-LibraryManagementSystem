@@ -48,28 +48,28 @@ def get_all_books():
     return jsonify(result)
 
 
-@app.route('/books/byTitle/<title>', methods=['GET'])
-@cross_origin()
-def get_books_by_title(title):
-    books = Book.query.filter(Book.title.like("%{}%".format(title))).all()
-    result = books_Schema.dump(books)
-    return jsonify(result)
-
-
-@app.route('/books/byAuthor/<author>', methods=['GET'])
-@cross_origin()
-def get_books_by_author(author):
-    books = Book.query.filter(Book.author.like("%{}%".format(author))).all()
-    result = books_Schema.dump(books)
-    return jsonify(result)
-
-
-@app.route('/books/byISBN/<ISBN>', methods=['GET'])
-@cross_origin()
-def get_books_by_ISBN(ISBN):
-    books = Book.query.filter(Book.ISBN.like("%{}%".format(ISBN))).all()
-    result = books_Schema.dump(books)
-    return jsonify(result)
+# @app.route('/books/byTitle/<title>', methods=['GET'])
+# @cross_origin()
+# def get_books_by_title(title):
+#     books = Book.query.filter(Book.title.like("%{}%".format(title))).all()
+#     result = books_Schema.dump(books)
+#     return jsonify(result)
+#
+#
+# @app.route('/books/byAuthor/<author>', methods=['GET'])
+# @cross_origin()
+# def get_books_by_author(author):
+#     books = Book.query.filter(Book.author.like("%{}%".format(author))).all()
+#     result = books_Schema.dump(books)
+#     return jsonify(result)
+#
+#
+# @app.route('/books/byISBN/<ISBN>', methods=['GET'])
+# @cross_origin()
+# def get_books_by_ISBN(ISBN):
+#     books = Book.query.filter(Book.ISBN.like("%{}%".format(ISBN))).all()
+#     result = books_Schema.dump(books)
+#     return jsonify(result)
 
 
 @app.route('/books/<id>', methods=['DELETE'])
@@ -79,3 +79,13 @@ def delete_book(id):
     db.session.delete(book)
     db.session.commit()
     return book_Schema.jsonify(book)
+
+
+@app.route('/books/<query>', methods=['GET'])
+@cross_origin()
+def search_book_by_query(query):
+    books = Book.query.filter(
+        Book.author.like("%{}%".format(query)) | Book.ISBN.like("%{}%".format(query)) | Book.title.like(
+            "%{}%".format(query))).all()
+    result = books_Schema.dump(books)
+    return jsonify(result)
