@@ -1,6 +1,6 @@
 import requests
 from borrow import BorrowService
-
+import time
 
 class ReturnService:
     _instance = None
@@ -46,12 +46,16 @@ class ReturnService:
         data = return_service.get_list_of_undue_books(user_email, name)
         return_service.print_list_of_undue_books(data)
         print("Enter an id corresponding to the book u wish to return")
+        print("Type anything if you have not borrowed any book to return to main menu")
         try:
-            choice = int(input("Your input: "))
+            choice = int(input("Your input: ").strip())
             for d in data:
                 if choice == d['id']:
                     req = requests.put(url='http://127.0.0.1:5000/return/{}'.format(choice))
                     print("Success!")
+            else:
+                print("You currently have not borrowed any book")
+                time.sleep(2)
         except Exception as e:
             print(e)
 

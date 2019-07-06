@@ -4,5 +4,7 @@
   "password": "GAtech321",
   "database": "piot_a2",
   "days_to_return_book": 7,
-  "secret_key": "my_secret"
+  "secret_key": "my_secret",
+  "reception_pi_IP": "",
+  "master_pi_IP": ""
 }

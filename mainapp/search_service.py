@@ -57,7 +57,7 @@ class Search:
 
     def confirmation(self, data, user_email, name):
         print("You would like to borrow: {} by {}. ISBN: {}".format(data['title'], data['author'], data['ISBN']))
-        choice = input("Is this correct (Y/n)? ")
+        choice = input("Is this correct (Y/n)? ").strip()
         if choice.upper() == 'Y':
             print(self._borrow_service.borrow(data['id'], user_email, name))
             print("Success!")
@@ -80,9 +80,9 @@ class Search:
                         "1. Borrow a book" + "\n"
                                              "2. Return to main menu" + "\n"
                                                                         "Your choice: "
-                    ))
+                    ).strip())
                     if choice == 1:
-                        book_id = input("Enter the ID of the book you'd like to borrow: ")
+                        book_id = input("Enter the ID of the book you'd like to borrow: ").strip()
                         if search.check_book_exist(book_id) is not None:
                             search.confirmation(search.check_book_exist(book_id), user_email, name)
                             break
