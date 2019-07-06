@@ -66,7 +66,8 @@ def return_book(borrow_id):
 @app.route('/borrow/user/<user_id>', methods=['GET'])
 @cross_origin()
 def get_all_undue_borrow_of_a_user(user_id):
-    borrow = BorrowedBooks.query.filter(BorrowedBooks.status == 'borrowed' and BorrowedBooks.user_id == user_id).all()
+    borrow = BorrowedBooks.query.filter(BorrowedBooks.status == 'borrowed').filter(
+        BorrowedBooks.user_id == user_id).all()
     result = borrowed_books_schema.dump(borrow)
 
     return jsonify(result)
@@ -79,4 +80,3 @@ def get_borrow_history_of_a_user(user_id):
     result = borrowed_books_schema.dump(borrow)
 
     return jsonify(result)
-
