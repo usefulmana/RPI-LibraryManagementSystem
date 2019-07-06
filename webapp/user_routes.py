@@ -1,4 +1,4 @@
-from app import db, ma, app, cross_origin, request
+from app import db, ma,app, cross_origin, request
 
 
 class Users(db.Model):

@@ -2,7 +2,7 @@ from app import db, ma, app, cross_origin, request, jsonify
 from datetime import datetime, timedelta
 from config_parser import Parser
 import json
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 
 
 class Admin(db.Model):
