@@ -72,6 +72,13 @@ def get_all_books():
 #     return jsonify(result)
 
 
+@app.route('/books/<id>', methods=['GET'])
+@cross_origin()
+def get_book_by_id(id):
+    book = Book.query.get(id)
+    return book_Schema.jsonify(book)
+
+
 @app.route('/books/<id>', methods=['DELETE'])
 @cross_origin()
 def delete_book(id):
@@ -81,7 +88,7 @@ def delete_book(id):
     return book_Schema.jsonify(book)
 
 
-@app.route('/books/<query>', methods=['GET'])
+@app.route('/books/others/<query>', methods=['GET'])
 @cross_origin()
 def search_book_by_query(query):
     books = Book.query.filter(
