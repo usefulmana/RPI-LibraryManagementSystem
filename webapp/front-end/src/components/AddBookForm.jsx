@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios'
+import { ADD_BOOK } from './rest_api_routes';
 
 export default class AddBookForm extends Component {
   constructor() {
@@ -27,11 +28,11 @@ export default class AddBookForm extends Component {
       modal: !this.state.modal
     });
   };
-    handleChange(date) {
-        this.setState({
-            published_date: date.toDateString()
-        });
-    }
+  handleChange(date) {
+      this.setState({
+          published_date: date.toDateString()
+      });
+  }
   onSubmit(e) {
     e.preventDefault();
     let formatted_date = this.state.published_date.getFullYear() + ":" + (this.state.published_date.getMonth() + 1) +
@@ -50,8 +51,7 @@ export default class AddBookForm extends Component {
         }
     }
     const body = JSON.stringify(book)
-    console.log(body)
-    axios.post('http://127.0.0.1:5000/books',body, config)
+    axios.post(ADD_BOOK,body, config)
     .then(res => alert("Success!")).then(res=> window.location.reload())
   }
 

@@ -43,7 +43,7 @@ class Analytics:
                 final_result = {"borrow": result1[0], "return": result2[0]}
                 with open('daily.csv', 'w+', newline='') as file:
                     writer = csv.writer(file)
-                    writer.writerow(["Borrow", "Status"])
+                    writer.writerow(["borrow", "return"])
                     writer.writerow([final_result["borrow"], final_result["return"]])
         except Exception as e:
             print(e)
@@ -70,7 +70,7 @@ class Analytics:
                 final_result = {"borrow": result1[0], "return": result2[0]}
                 with open('weekly.csv', 'w+', newline='') as file:
                     writer = csv.writer(file)
-                    writer.writerow(["Borrow", "Status"])
+                    writer.writerow(["borrow", "return"])
                     writer.writerow([final_result["borrow"], final_result["return"]])
         except Exception as e:
             print(e)

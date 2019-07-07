@@ -1,65 +1,67 @@
-import React, { Component } from 'react'
-import ReactTable from 'react-table'
+import React, { Component } from 'react';
 import AddBookForm from './AddBookForm';
+import DataTable from './DataTable';
+import SearchBar from './SearchBar';
+import { GET_ALL_BOOKS, GET_DAILY_REPORT_PLOT, GET_WEEKLY_REPORT_PLOT } from './rest_api_routes';
 
 export default class Dashboard extends Component {
-    constructor(){
-        super()
-        this.state = {
-            books: []
-        }
-    }
+  constructor() {
+    super();
+    this.state = {
+      books: [],
+      form_on: false
+    };
+    this.toggle_form = this.toggle_form.bind(this);
+  }
 
-    componentDidMount() {
-        this.fetchBooks()
-    }
-    onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-    onSubmit(e){
+  componentDidMount() {
+    this.fetchBooks();
+  }
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+  onSubmit(e) {}
+  toggle_form() {
+    this.setState({
+      form_on: !this.state.form_on
+    });
+  }
 
-    }
+  fetchBooks() {
+    fetch(GET_ALL_BOOKS)
+      .then(res => res.json())
+      .then(res =>
+        this.setState({
+          books: res
+        })
+      );
+  }
 
-    fetchBooks(){
-        fetch('http://127.0.0.1:5000/books')
-        .then(res => res.json())
-        .then(res => this.setState({
-            books: res
-        }))
-    }
-
-    render() {
-        const columns = [{
-            Header: 'ID',
-            accessor: 'id'
-        },{
-            Header: 'Title',
-            accessor: 'title'
-        },{
-            Header: 'Author',
-            accessor: 'author'
-        },{
-            Header: 'Published Date',
-            accessor: 'published_date'
-        },{
-            Header: 'ISBN',
-            accessor: 'ISBN'
-        }]
-        return (
-
-            <div className='container'>
-                <div>
-                    <AddBookForm/>
-                </div>
-                <br/>        
-                <div>
-                    <ReactTable
-                        data={this.state.books}
-                        columns={columns}
-                        defaultPageSize={10}
-                    />
-                </div>         
-            </div>
-        )
-    }
+  render() {
+    const form = () => {
+      return <AddBookForm />;
+    };
+    return (
+      <div className="container">
+        
+        <div>
+          <a href="">Generate Daily Report</a> | <a href=""> Generate Weekly Report</a>
+        </div>
+        <div>
+          <button className="btn btn-primary mb-2 mt-3" onClick={this.toggle_form}>
+            {' '}
+            Add Book{' '}
+          </button>
+          {this.state.form_on ? form() : null}
+        </div>
+        <br />
+        <div className='mb-3'>
+          <SearchBar />
+        </div>
+        <div className='text-center'>
+          <DataTable data={this.state.books} />
+        </div>
+      </div>
+    );
+  }
 }

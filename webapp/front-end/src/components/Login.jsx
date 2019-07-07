@@ -37,11 +37,11 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="container">
+      <React.Fragment>
         <div className="row">
-          <div className="text-center">
+          <div className="text-center mx-auto">
             <form noValidate onSubmit={this.onSubmit}>
-              <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+              <h1 className="h3 mb-3 font-weight-normal">Sign in</h1>
               <div className="form-group">
                 <label htmlFor="username">Username</label>
                 <input
@@ -74,7 +74,7 @@ class Login extends Component {
             </form>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

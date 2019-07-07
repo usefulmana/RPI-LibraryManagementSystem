@@ -31,7 +31,7 @@ class Navbar extends Component {
 
     return (
       <div className='container'>
-        <div className="row text-center">
+        <div className="text-center">
               <Link to="/" className="nav-link">
                 Home
               </Link>
