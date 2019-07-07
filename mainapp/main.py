@@ -41,7 +41,8 @@ class Menu:
                 elif choice == 2:
                     self._search_service.display_search_menu(user_email, name)
                 elif choice == 3:
-                    self._return_service.return_book(user_email, name)
+                    if not self._return_service.return_book(user_email, name):
+                        break
                 elif choice == 4:
                     break
                 else:

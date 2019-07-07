@@ -13,7 +13,6 @@ from book_routes import *
 from user_routes import *
 from borrowed_books_routes import *
 from app_routes import *
-# from admin_routes import *
 
 
 if __name__ == '__main__':

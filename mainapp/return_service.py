@@ -2,6 +2,7 @@ import requests
 from borrow import BorrowService
 import time
 
+
 class ReturnService:
     _instance = None
     @staticmethod
@@ -41,24 +42,32 @@ class ReturnService:
                                        books[i]['ISBN']))
             index += 1
 
+    @staticmethod
+    def check_if_book_exist_in_borrow_history(user_input, data):
+        for d in data:
+            if user_input == d['id']:
+                return True
+        return False
+
     def return_book(self, user_email, name):
         return_service = ReturnService.get_instance()
         data = return_service.get_list_of_undue_books(user_email, name)
         return_service.print_list_of_undue_books(data)
         print("Enter an id corresponding to the book u wish to return")
-        print("Type anything if you have not borrowed any book to return to main menu")
+        print("Leave the field blank and press Enter to return main menu")
         try:
             choice = int(input("Your input: ").strip())
-            for d in data:
-                if choice == d['id']:
-                    req = requests.put(url='http://127.0.0.1:5000/return/{}'.format(choice))
-                    print("Success!")
+            if return_service.check_if_book_exist_in_borrow_history(choice, data):
+                req = requests.put(url='http://127.0.0.1:5000/return/{}'.format(choice))
+                print("Success!")
+                time.sleep(2)
             else:
-                print("You currently have not borrowed any book")
+                print("No such book exists in your borrow history!")
                 time.sleep(2)
         except Exception as e:
             print(e)
+        return True
 
 
 if __name__ == '__main__':
-    ReturnService.get_instance().return_book("haha@gmail.com", "Bob")
+    pass

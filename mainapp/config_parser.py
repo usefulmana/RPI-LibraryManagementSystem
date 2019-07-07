@@ -21,7 +21,6 @@ class Parser:
             self._HOST = configs['host']
             self._PORT = configs['port']
 
-
     @property
     def host(self):
         return self._HOST

@@ -1,17 +1,9 @@
-from app import app, db, ma, render_template, request, make_response, jsonify, redirect, url_for, g
-import jwt
-from config_parser import Parser
-import datetime
-from functools import wraps
-# from admin_routes import Admin
-from flask_bootstrap import Bootstrap
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField
-from wtforms.validators import InputRequired, Email, Length
+from app import app, db, ma, request, jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token)
+
+
 jwt = JWTManager(app)
 
 
@@ -35,7 +27,7 @@ class Admin(db.Model):
 
 class AdminSchema(ma.Schema):
     class Meta:
-        fields = ('username', 'password')
+        fields = ('username',)
 
 
 admin_Schema = AdminSchema()
@@ -51,6 +43,23 @@ def create_admin():
     db.session.commit()
 
     return admin_Schema.jsonify(new_admin)
+
+
+@app.route('/admin', methods=['PUT'])
+def update_admin_info():
+    username = request.json['username']
+    password = request.json['password']
+    new_password = request.json['new_password']
+    user = Admin.query.filter(Admin.username == username).first()
+    if not user:
+        return jsonify({"error": "No such username exists"})
+    else:
+        if check_password_hash(user.serialize['password'], password):
+            user.password = generate_password_hash(new_password, method='sha256')
+            db.session.commit()
+        else:
+            return jsonify({"error": "Invalid password!"})
+    return admin_Schema.jsonify(user)
 
 
 @app.route('/login', methods=['POST'])
