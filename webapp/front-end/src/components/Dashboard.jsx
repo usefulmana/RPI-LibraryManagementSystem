@@ -45,7 +45,7 @@ export default class Dashboard extends Component {
       <div className="container">
         
         <div>
-          <Link to='/reports'>Generate Reports</Link>
+          <Link to='/reports'>View Reports</Link>
         </div>
         <div>
           <button className="btn btn-primary mb-2 mt-3" onClick={this.toggle_form}>

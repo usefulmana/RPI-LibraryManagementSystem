@@ -21,5 +21,6 @@ app.get('/reports', function(req, res) {
 app.get('/search/:query?', function(req, res) {
   res.sendFile(path.join(__dirname + '/build/index.html'));
 });
-
-app.listen(9000);
+PORT = 9000
+console.log(`Web server is running on port ${PORT}`)
+app.listen(PORT);

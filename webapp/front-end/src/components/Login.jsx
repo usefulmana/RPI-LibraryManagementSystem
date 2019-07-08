@@ -7,7 +7,7 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
-      error: ''
+      error: '',
     };
 
     this.onChange = this.onChange.bind(this);
@@ -34,7 +34,12 @@ class Login extends Component {
       }
     });
   }
-
+  logOut(e) {
+    e.preventDefault();
+    localStorage.removeItem('usertoken');
+    this.setState({authenticated:false})
+    this.props.history.push(`/`);
+  }
   render() {
     return (
       <React.Fragment>

@@ -14,3 +14,10 @@ export const login = user => {
       console.log(err);
     });
 };
+
+export const isAuthenticated = () => {
+    if(localStorage.getItem('usertoken') == null){
+      return false
+    }
+    return true
+}

@@ -8,7 +8,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import SearchResults from './components/SearchResults';
 import Reports from './components/Reports';
-
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -22,9 +22,9 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/reports" component={Reports}/>
-          <Route
+          <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+          <ProtectedRoute exact path="/reports" component={Reports}/>
+          <ProtectedRoute
             path="/search/:query?"
             component={props => (
               <SearchResults timestamp={new Date().toString()} {...props} />

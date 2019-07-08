@@ -4,7 +4,6 @@ from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token)
 
 
-
 jwt = JWTManager(app)
 
 
@@ -33,17 +32,17 @@ class AdminSchema(ma.Schema):
 
 admin_Schema = AdminSchema()
 
-
-@app.route('/admin', methods=['POST'])
-def create_admin():
-    data = request.get_json()
-    hashed_password = generate_password_hash(data['password'], method='sha256')
-    username = data['username']
-    new_admin = Admin(username, hashed_password)
-    db.session.add(new_admin)
-    db.session.commit()
-
-    return admin_Schema.jsonify(new_admin)
+# This route should be disabled to prevent additional account creation
+# @app.route('/admin', methods=['POST'])
+# def create_admin():
+#     data = request.get_json()
+#     hashed_password = generate_password_hash(data['password'], method='sha256')
+#     username = data['username']
+#     new_admin = Admin(username, hashed_password)
+#     db.session.add(new_admin)
+#     db.session.commit()
+#
+#     return admin_Schema.jsonify(new_admin)
 
 
 @app.route('/admin', methods=['PUT'])
