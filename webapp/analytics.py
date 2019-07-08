@@ -67,17 +67,18 @@ class Analytics:
                 sql1 = "select borrow_date as date, count(`id`) as count from borrowed_books where status = 'borrowed' group by borrow_date order by borrow_date desc limit 7"
                 cursor.execute(sql1)
                 result1 = cursor.fetchall()
-                print(result1)
                 sql2 = "select count(`id`) as count from borrowed_books where status = 'returned' group by borrow_date order by borrow_date desc limit 7"
                 cursor.execute(sql2)
                 result2 = cursor.fetchall()
-                print(result2)
-                # final_result = {"borrow": result1[0], "return": result2[0]}
-                # with open('weekly.csv', 'w+', newline='') as weekly_report:
-                #     writer = csv.writer(weekly_report)
-                #     writer.writerow(["borrows", "returns"])
-                #     writer.writerow([final_result["borrow"], final_result["return"]])
-                #     weekly_report.close()
+                final_result = []
+                for r in range(len(result1)):
+                    final_result.append([result1[r][0], result1[r][1], result2[r][0]])
+                with open('weekly.csv', 'w+', newline='') as weekly_report:
+                    writer = csv.writer(weekly_report)
+                    writer.writerow(["date", "borrows", "returns"])
+                    for result in final_result:
+                        writer.writerow([result[0], result[1], result[2]])
+                    weekly_report.close()
         except Exception as e:
             print(e)
         finally:

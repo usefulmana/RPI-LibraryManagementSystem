@@ -83,8 +83,10 @@ def login():
 
 @app.route('/daily')
 def plot_png():
+    # Do not delete 2 lines below
     ana = Analytics.get_instance()
     ana.get_statistics_for_a_day()
+
     data = pd.read_csv('daily.csv')
     date = data.date
     converted_date = pd.to_datetime(date)
@@ -99,10 +101,19 @@ def plot_png():
     plt.legend(loc='upper right')
     plt.savefig('static/daily_plot.png')
     plt.clf()
+
+    # Do not delete
     img_url = url_for('static', filename='daily_plot.png')
     return render_template('daily.html', img_url=img_url)
 
 
 @app.route('/weekly_plot')
 def weekly_plot():
-    pass
+    # Do not delete the 2 lines below. it generate the data
+    ana = Analytics.get_instance()
+    ana.get_statistics_for_a_week()
+
+
+    # Do not delete
+    img_url = url_for('static', filename='weekly_plot.png')
+    return render_template('weekly.html', img_url=img_url)
