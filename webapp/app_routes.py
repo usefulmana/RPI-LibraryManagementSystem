@@ -5,6 +5,7 @@ from flask_jwt_extended import (create_access_token)
 import datetime
 from analytics import Analytics
 import pandas as pd
+import seaborn as sns
 from matplotlib import pyplot as plt
 
 jwt = JWTManager(app)
@@ -117,3 +118,21 @@ def weekly_plot():
     # Do not delete
     img_url = url_for('static', filename='weekly_plot.png')
     return render_template('weekly.html', img_url=img_url)
+
+
+def plot_barplot(file):
+    """
+        Generate bar plot, can be used for both daily and weekly
+        if the table has the same columns ['date', 'borrows', 'returns']
+    :param file: path to CSV file
+    :return: pop up figure
+    """
+    sns.set()
+    daily_df = pd.read_csv(file)
+    daily_df = pd.melt(daily_df, id_vars='date', var_name='type', value_name='count')
+
+    with sns.color_palette('husl'):
+        fig, ax = plt.subplots(1)
+        sns.barplot(x='date', y='count', hue='type', data=daily_df, ax=ax)
+
+    plt.show()
