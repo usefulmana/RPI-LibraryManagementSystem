@@ -2,11 +2,8 @@ from app import app, db, ma, request, jsonify, render_template, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token)
-import datetime
-from analytics import Analytics
-import pandas as pd
-import seaborn as sns
-from matplotlib import pyplot as plt
+
+
 
 jwt = JWTManager(app)
 
@@ -82,57 +79,38 @@ def login():
         return result
 
 
-@app.route('/daily')
-def plot_png():
-    # Do not delete 2 lines below
-    ana = Analytics.get_instance()
-    ana.get_statistics_for_a_day()
-
-    data = pd.read_csv('daily.csv')
-    date = data.date
-    converted_date = pd.to_datetime(date)
-    borrows = data.borrows
-    returns = data.returns
-    plt.style.use('bmh')
-    plt.plot(converted_date, borrows, c='r', label='Borrow')
-    plt.plot(converted_date, returns, c='b', label='Return')
-    plt.title('Daily Borrows & Returns')
-    plt.ylabel('Count')
-    plt.xlabel('Date')
-    plt.legend(loc='upper right')
-    plt.savefig('static/daily_plot.png')
-    plt.clf()
-
-    # Do not delete
-    img_url = url_for('static', filename='daily_plot.png')
-    return render_template('daily.html', img_url=img_url)
-
-
-@app.route('/weekly_plot')
-def weekly_plot():
-    # Do not delete the 2 lines below. it generate the data
-    ana = Analytics.get_instance()
-    ana.get_statistics_for_a_week()
-
-
-    # Do not delete
-    img_url = url_for('static', filename='weekly_plot.png')
-    return render_template('weekly.html', img_url=img_url)
-
-
-def plot_barplot(file):
-    """
-        Generate bar plot, can be used for both daily and weekly
-        if the table has the same columns ['date', 'borrows', 'returns']
-    :param file: path to CSV file
-    :return: pop up figure
-    """
-    sns.set()
-    daily_df = pd.read_csv(file)
-    daily_df = pd.melt(daily_df, id_vars='date', var_name='type', value_name='count')
-
-    with sns.color_palette('husl'):
-        fig, ax = plt.subplots(1)
-        sns.barplot(x='date', y='count', hue='type', data=daily_df, ax=ax)
-
-    plt.show()
+# @app.route('/daily', methods=['GET'])
+# def daily_plot():
+#     # Do not delete 2 lines below
+#     ana = Analytics.get_instance()
+#     ana.get_statistics_for_a_day()
+#
+#     plot_barplot('daily.csv', 'daily.png')
+#     return jsonify({"message": "Image generated"})
+#
+#
+# @app.route('/weekly', methods=['GET'])
+# def weekly_plot():
+#     # Do not delete the 2 lines below. it generate the data
+#     ana = Analytics.get_instance()
+#     ana.get_statistics_for_a_week()
+#
+#     plot_barplot('weekly.csv', 'weekly.png')
+#     return jsonify({"message": "Image generated"})
+#
+#
+# def plot_barplot(file, output_file):
+#     """
+#         Generate bar plot, can be used for both daily and weekly
+#         if the table has the same columns ['date', 'borrows', 'returns']
+#     :param file: path to CSV file
+#     :return: pop up figure
+#     """
+#     sns.set()
+#     daily_df = pd.read_csv(file)
+#     daily_df = pd.melt(daily_df, id_vars='date', var_name='type', value_name='count')
+#
+#     with sns.color_palette('husl'):
+#         fig, ax = plt.subplots(1)
+#         sns.barplot(x='date', y='count', hue='type', data=daily_df, ax=ax)
+#     plt.savefig('front-end/public/images/' + output_file)

@@ -7,6 +7,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import SearchResults from './components/SearchResults';
+import Reports from './components/Reports';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/reports" component={Reports}/>
           <Route
             path="/search/:query?"
             component={props => (

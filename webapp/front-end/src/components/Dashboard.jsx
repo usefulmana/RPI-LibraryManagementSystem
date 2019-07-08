@@ -3,7 +3,7 @@ import AddBookForm from './AddBookForm';
 import DataTable from './DataTable';
 import SearchBar from './SearchBar';
 import { GET_ALL_BOOKS, GET_DAILY_REPORT_PLOT, GET_WEEKLY_REPORT_PLOT } from './rest_api_routes';
-
+import {Link} from 'react-router-dom'
 export default class Dashboard extends Component {
   constructor() {
     super();
@@ -45,8 +45,7 @@ export default class Dashboard extends Component {
       <div className="container">
         
         <div>
-          <a href={GET_DAILY_REPORT_PLOT} target="_blank">Generate Daily Report</a> | 
-          <a href={GET_WEEKLY_REPORT_PLOT} target="_blank"> Generate Weekly Report</a>
+          <Link to='/reports'>Generate Reports</Link>
         </div>
         <div>
           <button className="btn btn-primary mb-2 mt-3" onClick={this.toggle_form}>

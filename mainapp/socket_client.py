@@ -2,13 +2,13 @@
 # Documentation: https://docs.python.org/3/library/socket.html
 import socket, socket_utils
 
-HOST = "10.247.212.209"
+HOST = "192.168.0.2"
 # HOST = "127.0.0.1" # The server's hostname or IP address.
 PORT = 64000       # The port used by the server.
 ADDRESS = (HOST, PORT)
 
 
-def socket_client(email, name, status):
+def socket_client():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print("Connecting to {}...".format(ADDRESS))
         s.connect(ADDRESS)

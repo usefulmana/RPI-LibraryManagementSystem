@@ -15,6 +15,9 @@ app.get('/login', function(req, res) {
 app.get('/dashboard', function(req, res) {
   res.sendFile(path.join(__dirname + '/build/index.html'));
 });
+app.get('/reports', function(req, res) {
+  res.sendFile(path.join(__dirname + '/build/index.html'));
+});
 app.get('/search/:query?', function(req, res) {
   res.sendFile(path.join(__dirname + '/build/index.html'));
 });

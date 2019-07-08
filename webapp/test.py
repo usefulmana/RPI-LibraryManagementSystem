@@ -17,6 +17,6 @@ def plot_barplot(file):
     with sns.color_palette('husl'):
         fig, ax = plt.subplots(1)
         sns.barplot(x='date', y='count', hue='type', data=daily_df, ax=ax)
-    plt.show()
+    plt.savefig('front-end/public/weekly.png')
 
 plot_barplot('weekly.csv')
