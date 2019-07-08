@@ -8,7 +8,7 @@ PORT = 64000       # The port used by the server.
 ADDRESS = (HOST, PORT)
 
 
-def socket_client():
+def socket_client(email, name, status):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print("Connecting to {}...".format(ADDRESS))
         s.connect(ADDRESS)
