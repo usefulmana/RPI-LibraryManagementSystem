@@ -7,7 +7,7 @@ export const login = user => {
       password: user.password
     })
     .then(response => {
-      localStorage.setItem('usertoken', response.data);
+      sessionStorage.setItem('usertoken', response.data);
       return response.data;
     })
     .catch(err => {
@@ -16,7 +16,7 @@ export const login = user => {
 };
 
 export const isAuthenticated = () => {
-    if(localStorage.getItem('usertoken') == null){
+    if(sessionStorage.getItem('usertoken') == null){
       return false
     }
     return true

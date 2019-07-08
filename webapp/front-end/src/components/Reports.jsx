@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
+import { GET_DAILY_CHART, GET_WEEKLY_CHART } from './rest_api_routes';
 
 export default class Reports extends Component {
-
+    
     render() {
         return (
             <div className='container'>
                 <div className="row">
                     <div className='col-6'>
-                        <img src="/images/daily.png" alt="Daily chart" /><br />
+                        <img src={GET_DAILY_CHART} alt="Daily chart" /><br />
                         <p><b>Daily</b></p>
                     </div>
                     <div className='col-6'>
-                        <img src="/images/weekly.png" alt="Weekly chart" /><br />
+                        <img src={GET_WEEKLY_CHART} alt="Weekly chart" /><br />
                         <p><b>Weekly</b></p>
                     </div>  
                 </div>

@@ -5,7 +5,7 @@ import { isAuthenticated } from './UserFunctions';
 class Navbar extends Component {
   logOut(e) {
     e.preventDefault();
-    localStorage.removeItem('usertoken');
+    sessionStorage.removeItem('usertoken');
     this.props.history.push(`/`);
   }
 
@@ -42,7 +42,7 @@ class Navbar extends Component {
               <Link to="/" className="nav-link">
                 Home
               </Link>
-                {localStorage.usertoken ? userLink : loginLink}
+                {sessionStorage.usertoken ? userLink : loginLink}
         </div>
       </div>
     );
