@@ -1,12 +1,8 @@
-from app import app, db, ma, request, jsonify
+from app import app, db, ma, request, jsonify, render_template, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token)
-import io
-import random
-from flask import Response
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
+import datetime
 from analytics import Analytics
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -85,23 +81,26 @@ def login():
         return result
 
 
-@app.route('/daily_plot.png')
+@app.route('/daily')
 def plot_png():
-    fig = create_figure()
-    output = io.BytesIO()
-    FigureCanvas(fig).print_png(output)
-    return Response(output.getvalue(), mimetype='image/png')
-
-
-def create_figure():
-    fig = Figure()
-    axis = fig.add_subplot(1, 1, 1)
-    Analytics.get_instance().get_statistics_for_a_day()
+    ana = Analytics.get_instance()
+    ana.get_statistics_for_a_day()
     data = pd.read_csv('daily.csv')
-    xs = range(100)
-    ys = [random.randint(1, 50) for x in xs]
-    axis.bar(xs, ys)
-    return fig
+    date = data.date
+    converted_date = pd.to_datetime(date)
+    borrows = data.borrows
+    returns = data.returns
+    plt.style.use('bmh')
+    plt.plot(converted_date, borrows, c='r', label='Borrow')
+    plt.plot(converted_date, returns, c='b', label='Return')
+    plt.title('Daily Borrows & Returns')
+    plt.ylabel('Count')
+    plt.xlabel('Date')
+    plt.legend(loc='upper right')
+    plt.savefig('static/daily_plot.png')
+    plt.clf()
+    img_url = url_for('static', filename='daily_plot.png')
+    return render_template('daily.html', img_url=img_url)
 
 
 @app.route('/weekly_plot')

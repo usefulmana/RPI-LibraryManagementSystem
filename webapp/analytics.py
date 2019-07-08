@@ -40,16 +40,19 @@ class Analytics:
                 sql2 = "SELECT COUNT(id) from borrowed_books where status = 'returned' and borrow_date = current_date"
                 cursor.execute(sql2)
                 result2 = cursor.fetchone()
-                final_result = {"borrow": result1[0], "return": result2[0]}
-                with open('daily.csv', 'w+', newline='') as file:
-                    writer = csv.writer(file)
-                    writer.writerow(["borrow", "return"])
-                    writer.writerow([final_result["borrow"], final_result["return"]])
+                sql3 = "SELECT current_date from borrowed_books"
+                cursor.execute(sql3)
+                result3 = cursor.fetchone()
+                final_result = {"date": result3[0], "borrow": result1[0], "return": result2[0]}
+                with open('daily.csv', 'w+', newline='') as daily_report:
+                    writer = csv.writer(daily_report)
+                    writer.writerow(["date", "borrows", "returns"])
+                    writer.writerow([final_result['date'], final_result["borrow"], final_result["return"]])
+                    daily_report.close()
         except Exception as e:
             print(e)
         finally:
             my_database.close()
-            file.close()
 
     def get_statistics_for_a_week(self):
         try:
@@ -61,25 +64,27 @@ class Analytics:
             )
             if my_database.is_connected():
                 cursor = my_database.cursor()
-                sql1 = "SELECT COUNT(id) from borrowed_books where status = 'borrowed' and borrow_date >= current_date - 7"
+                sql1 = "select borrow_date as date, count(`id`) as count from borrowed_books where status = 'borrowed' group by borrow_date order by borrow_date desc limit 7"
                 cursor.execute(sql1)
-                result1 = cursor.fetchone()
-                sql2 = "SELECT COUNT(id) from borrowed_books where status = 'returned' and borrow_date >= current_date - 7"
+                result1 = cursor.fetchall()
+                print(result1)
+                sql2 = "select count(`id`) as count from borrowed_books where status = 'returned' group by borrow_date order by borrow_date desc limit 7"
                 cursor.execute(sql2)
-                result2 = cursor.fetchone()
-                final_result = {"borrow": result1[0], "return": result2[0]}
-                with open('weekly.csv', 'w+', newline='') as file:
-                    writer = csv.writer(file)
-                    writer.writerow(["borrow", "return"])
-                    writer.writerow([final_result["borrow"], final_result["return"]])
+                result2 = cursor.fetchall()
+                print(result2)
+                # final_result = {"borrow": result1[0], "return": result2[0]}
+                # with open('weekly.csv', 'w+', newline='') as weekly_report:
+                #     writer = csv.writer(weekly_report)
+                #     writer.writerow(["borrows", "returns"])
+                #     writer.writerow([final_result["borrow"], final_result["return"]])
+                #     weekly_report.close()
         except Exception as e:
             print(e)
         finally:
             my_database.close()
-            file.close()
 
 
 if __name__ == '__main__':
     anal = Analytics.get_instance()
-    anal.get_statistics_for_a_day()
+    # anal.get_statistics_for_a_day()
     anal.get_statistics_for_a_week()

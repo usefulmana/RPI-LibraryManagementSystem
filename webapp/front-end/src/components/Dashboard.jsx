@@ -45,7 +45,8 @@ export default class Dashboard extends Component {
       <div className="container">
         
         <div>
-          <a href="">Generate Daily Report</a> | <a href=""> Generate Weekly Report</a>
+          <a href={GET_DAILY_REPORT_PLOT} target="_blank">Generate Daily Report</a> | 
+          <a href={GET_WEEKLY_REPORT_PLOT} target="_blank"> Generate Weekly Report</a>
         </div>
         <div>
           <button className="btn btn-primary mb-2 mt-3" onClick={this.toggle_form}>
