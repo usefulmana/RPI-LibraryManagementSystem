@@ -3,6 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token)
 from flask import send_file
+from analytics import Analytics
 
 jwt = JWTManager(app)
 
@@ -80,12 +81,16 @@ def login():
 
 @app.route('/weekly')
 def get_weekly_plot():
+    ana = Analytics.get_instance()
+    ana.weekly_plot()
     filename = 'images/weekly.png'
     return send_file(filename, mimetype='image/png')
 
 
 @app.route('/daily')
 def get_daily_plot():
+    ana = Analytics.get_instance()
+    ana.daily_plot()
     filename = 'images/daily.png'
     return send_file(filename, mimetype='image/png')
 # @app.route('/daily', methods=['GET'])

@@ -123,5 +123,7 @@ class Analytics:
 
 if __name__ == '__main__':
     anal = Analytics.get_instance()
-    anal.daily_plot()
-    anal.weekly_plot()
+    # anal.daily_plot()
+    # anal.weekly_plot()
+    anal.get_statistics_for_a_week()
+    anal.get_statistics_for_a_day()

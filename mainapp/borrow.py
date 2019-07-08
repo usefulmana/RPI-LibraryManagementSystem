@@ -1,5 +1,7 @@
 import requests
 from google_calendar_service import event_insert
+from qr_generator import qr_generator
+from email_sender import send_email
 
 
 class BorrowService:
@@ -23,6 +25,10 @@ class BorrowService:
         choice = input("Would you like to be reminded of the due date via Google Calendar (Y/n)? ")
         if choice.strip().upper() == 'Y':
             event_insert(user_email)
+        opt_in_qr = input("Would you like to use the Quick Return service (Y/n)? ")
+        if opt_in_qr.strip().upper() == 'Y':
+            qr_generator({"borrow_id": req.json()['id']})
+            send_email(user_email)
         return "Please return this book before: {}".format(req.json()['return_date'])
 
     @staticmethod
