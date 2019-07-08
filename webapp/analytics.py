@@ -118,7 +118,7 @@ class Analytics:
         with sns.color_palette('husl'):
             fig, ax = plt.subplots(1)
             sns.barplot(x='date', y='count', hue='type', data=daily_df, ax=ax)
-        plt.savefig('front-end/public/images/' + output_file)
+        plt.savefig('images/' + output_file)
 
 
 if __name__ == '__main__':

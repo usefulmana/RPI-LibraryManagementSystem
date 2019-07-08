@@ -13,6 +13,7 @@ import datetime
 import imutils
 import time
 import cv2
+from qr_parser import QRParser
 
 
 class QRScanner:
@@ -35,6 +36,7 @@ class QRScanner:
     def scan_qr():
         # initialize the video stream and allow the camera sensor to warm up
         print("[INFO] starting video stream...")
+        qr_parser = QRParser.get_instance()
         vs = VideoStream(src=0).start()
         time.sleep(2.0)
 
@@ -49,9 +51,6 @@ class QRScanner:
 
             # find the barcodes in the frame and decode each of the barcodes
             barcodes = pyzbar.decode(frame)
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-            cv2.imshow('frame', gray)
             # loop over the detected barcodes
             for barcode in barcodes:
                 # the barcode data is a bytes object so we convert it to a string
@@ -60,6 +59,7 @@ class QRScanner:
 
                 # if the barcode text has not been seen before print it and update the set
                 if barcodeData not in found:
+                    print(qr_parser.convert_data_to_dict(barcodeData))
                     print("[FOUND] Type: {}, Data: {}".format(barcodeType, barcodeData))
                     found.add(barcodeData)
 

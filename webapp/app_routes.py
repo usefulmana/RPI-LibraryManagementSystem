@@ -2,7 +2,7 @@ from app import app, db, ma, request, jsonify, render_template, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token)
-
+from flask import send_file
 
 jwt = JWTManager(app)
 
@@ -78,6 +78,16 @@ def login():
         return result
 
 
+@app.route('/weekly')
+def get_weekly_plot():
+    filename = 'images/weekly.png'
+    return send_file(filename, mimetype='image/png')
+
+
+@app.route('/daily')
+def get_daily_plot():
+    filename = 'images/daily.png'
+    return send_file(filename, mimetype='image/png')
 # @app.route('/daily', methods=['GET'])
 # def daily_plot():
 #     # Do not delete 2 lines below
