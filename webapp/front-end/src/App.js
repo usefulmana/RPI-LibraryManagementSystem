@@ -10,6 +10,7 @@ import SearchResults from './components/SearchResults';
 import Reports from './components/Reports';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import WeeklyReport from './components/WeeklyReport';
+import PageNotFound from './components/PageNotFound';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
               <SearchResults timestamp={new Date().toString()} {...props} />
             )}
           />
+          <Route path="*" component={PageNotFound}/>
         </Switch>
       </div>
     </Router>
