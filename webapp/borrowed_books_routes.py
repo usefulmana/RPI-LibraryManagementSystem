@@ -35,6 +35,11 @@ borrowed_books_schema = BorrowedBooksSchema(many=True)
 
 
 def days_to_return_book(borrow_date):
+    """
+    A mini JSON parser to extract how many days should a borrowed book be returned
+    :param borrow_date: the date in which the book is borrowed
+    :return: a new date with added days
+    """
     with open('config.json') as file:
         data = json.load(file)
     return borrow_date + timedelta(days=Parser.get_instance().days_to_return)
@@ -43,11 +48,18 @@ def days_to_return_book(borrow_date):
 @app.route('/borrow/<book_id>/user/<user_id>', methods=['POST'])
 @cross_origin()
 def borrow_book(book_id, user_id):
+    """
+    Use this route to execute a borrow transaction
+    :param book_id: target book's id
+    :param user_id: target user's id
+    :return: a JSON containing transaction's information
+    """
     borrow_date = datetime.now()
     due_date = days_to_return_book(borrow_date)
     borrow_status = "borrowed"
     return_status = None
     return_date = None
+    # Create a new row
     borrow = BorrowedBooks(book_id, user_id, borrow_date, due_date, return_date, borrow_status, return_status)
     db.session.add(borrow)
     db.session.commit()
@@ -57,8 +69,15 @@ def borrow_book(book_id, user_id):
 @app.route('/return/<borrow_id>', methods=['PUT'])
 @cross_origin()
 def return_book(borrow_id):
+    """
+    use this route when user want to return the book
+    :param borrow_id: target borrow's id
+    :return: a json containing information regarding this transaction
+    """
     borrow = BorrowedBooks.query.get(borrow_id)
+    # switch return status to return
     borrow.return_status = "returned"
+    # switch return date to current time
     borrow.return_date = datetime.now()
     db.session.commit()
 
@@ -68,6 +87,11 @@ def return_book(borrow_id):
 @app.route('/borrow/<borrow_id>')
 @cross_origin()
 def get_borrow_from_id(borrow_id):
+    """
+    Get borrow info
+    :param borrow_id: borrow's id
+    :return: json with borrow's information
+    """
     borrow = BorrowedBooks.query.get(borrow_id)
     return borrowed_book_schema.jsonify(borrow)
 
@@ -75,6 +99,11 @@ def get_borrow_from_id(borrow_id):
 @app.route('/borrow/user/<user_id>', methods=['GET'])
 @cross_origin()
 def get_all_undue_borrow_of_a_user(user_id):
+    """
+    use this route to get all undue book of a user
+    :param user_id:  target user's id
+    :return: A JSON containing all undue books of a user
+    """
     borrow = BorrowedBooks.query.filter(BorrowedBooks.return_status == None).filter(
         BorrowedBooks.user_id == user_id).all()
     result = borrowed_books_schema.dump(borrow)
@@ -85,6 +114,11 @@ def get_all_undue_borrow_of_a_user(user_id):
 @app.route('/borrow/user/<user_id>/all', methods=['GET'])
 @cross_origin()
 def get_borrow_history_of_a_user(user_id):
+    """
+    Get borrow & return history of a user
+    :param user_id: target user's id
+    :return: A JSON with the list of borrow & return of the target user
+    """
     borrow = BorrowedBooks.query.filter(BorrowedBooks.user_id == user_id).all()
     result = borrowed_books_schema.dump(borrow)
 

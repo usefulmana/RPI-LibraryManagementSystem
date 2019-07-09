@@ -6,8 +6,13 @@ from email_sender import send_email
 
 class BorrowService:
     _instance = None
+
     @staticmethod
     def get_instance():
+        """
+        This method returns a singleton BorrowService class
+        :return: an instance of BorrowService class
+        """
         if BorrowService._instance is None:
             BorrowService()
         return BorrowService._instance
@@ -20,6 +25,13 @@ class BorrowService:
 
     @staticmethod
     def borrow(book_id, user_email, name):
+        """
+        This methods will execute the POST request to the REST API and provided users additional services...
+        :param book_id: id of the book the user want to borrow
+        :param user_email: email of the user who is currently using this application
+        :param name: name of the user
+        :return: a string to remind of the user of due date
+        """
         user_id = BorrowService.get_instance().get_user_id_from_email(user_email, name)
         req = requests.post('http://127.0.0.1:5000/borrow/{}/user/{}'.format(book_id, user_id))
         choice = input("Would you like to be reminded of the due date via Google Calendar (Y/n)? ")
@@ -33,6 +45,12 @@ class BorrowService:
 
     @staticmethod
     def get_user_id_from_email(user_email, name):
+        """
+        Check if a user already exists in the database. If not, create a new user
+        :param user_email: unique identifier for a user
+        :param name: name of the user
+        :return: id of the user
+        """
         req = requests.get('http://127.0.0.1:5000/users/byEmail/{}'.format(user_email))
         if req.json():
             return req.json()['id']

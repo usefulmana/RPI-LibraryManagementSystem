@@ -7,6 +7,10 @@ class ReturnService:
     _instance = None
     @staticmethod
     def get_instance():
+        """
+        This method will return an instance of ReturnService class
+        :return:  An instance of ReturnService class
+        """
         if ReturnService._instance is None:
             ReturnService()
         return ReturnService._instance
@@ -19,16 +23,29 @@ class ReturnService:
             self._borrow_service = BorrowService.get_instance()
 
     def get_list_of_undue_books(self, user_email, name):
+        """
+        This function will get the list of undue books of a user
+        :param user_email: target user's email
+        :param name: target user's name
+        :return: a JSON file will include the list of undue books
+        """
         user_id = self._borrow_service.get_user_id_from_email(user_email, name)
         req = requests.get(url='http://127.0.0.1:5000/borrow/user/{}'.format(user_id))
         return req.json()
 
     @staticmethod
     def print_list_of_undue_books(res):
+        """
+        This function will print the list of undue books
+        :param res: a JSON file with list of undue books
+        :return: none
+        """
         book_keys = []
+        # Extracting books' ids from the JSON file
         for r in res:
             book_keys.append(r['book_id'])
         books = []
+        # Fetch another JSON contains undue books' information
         for i in book_keys:
             req = requests.get(url='http://127.0.0.1:5000/books/{}'.format(i))
             books.append(req.json())
@@ -44,20 +61,36 @@ class ReturnService:
 
     @staticmethod
     def check_if_book_exist_in_borrow_history(user_input, data):
+        """
+        Check if user_input is entered the correct id
+        :param user_input: user's input
+        :param data: JSON file containing a list of user's undue book
+        :return: True if id does exist, False if not
+        """
         for d in data:
             if user_input == d['id']:
                 return True
         return False
 
     def return_book(self, user_email, name):
+        """
+        Displaying the return menu to user
+        :param user_email:
+        :param name:
+        :return: True a condition to break loop
+        """
         return_service = ReturnService.get_instance()
+        # Getting list of user's undue books
         data = return_service.get_list_of_undue_books(user_email, name)
+        # print the list out
         return_service.print_list_of_undue_books(data)
         print("Enter an id corresponding to the book u wish to return")
         print("Leave the field blank and press Enter to return main menu")
         try:
             choice = int(input("Your input: ").strip())
+            # Checking user's input
             if return_service.check_if_book_exist_in_borrow_history(choice, data):
+                # If correct, execute return request
                 req = requests.put(url='http://127.0.0.1:5000/return/{}'.format(choice))
                 print("Success!")
                 time.sleep(2)

@@ -16,6 +16,7 @@ export const login = user => {
 };
 
 export const isAuthenticated = () => {
+    // check if user is authenticated
     if(sessionStorage.getItem('usertoken') == null){
       return false
     }

@@ -14,7 +14,9 @@ from user_routes import *
 from borrowed_books_routes import *
 from app_routes import *
 
-
+"""
+Where the Flask REST API congregates, all the configs and routes are imported here.
+"""
 if __name__ == '__main__':
     db.create_all()
     app.run()

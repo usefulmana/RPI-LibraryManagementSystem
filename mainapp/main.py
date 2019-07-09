@@ -16,6 +16,10 @@ class Menu:
     # Only one instance of this class should exist
     @staticmethod
     def get_instance():
+        """
+        This method returns a singleton Menu class
+        :return: an instance of Menu class
+        """
         if Menu._instance is None:
             Menu()
         return Menu._instance
@@ -30,6 +34,12 @@ class Menu:
             self._return_service = ReturnService.get_instance()
 
     def display_menu(self, name, user_email):
+        """
+        This methods displays the main menu to users
+        :param name: name of user received from Reception Pi
+        :param user_email: email of user received from Reception Pi
+        :return: none
+        """
         while True:
             try:
                 print('Welcome {}!'.format(name))
@@ -63,8 +73,10 @@ class Menu:
 
 
 if __name__ == '__main__':
+    # Opening a socket server and wait for Reception's Pi to respond
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(ADDRESS)
+        # Infinite loop to prevent program frond exiting
         while True:
             print("Waiting for Reception Pi...")
             s.listen()
@@ -73,11 +85,12 @@ if __name__ == '__main__':
             object = socket_utils.recvJson(conn)
             if("end" in object):
                 break
-
+            # Notify users that their information has been received
             print("Received")
             menu = Menu.get_instance()
+            # Invoke main menu
             menu.display_menu(object['name'], object['user_email'])
-
+            # Return the user JSON with a changed status to let Reception Pi knows the user wants to log out
             object['status'] = "logged out"
             # print("Sending data back.")
             socket_utils.sendJson(conn, object)

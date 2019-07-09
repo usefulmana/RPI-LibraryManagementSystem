@@ -1,5 +1,6 @@
 import json
 
+# This file containing all configurations of the  Flask application
 with open('config.json') as config:
     data = json.load(config)
 DEBUG = True

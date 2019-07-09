@@ -25,6 +25,10 @@ users_schema = UserSchema(many=True)
 @app.route('/users', methods=['POST'])
 @cross_origin()
 def add_user():
+    """
+    Add new user to the database
+    :return: A JSON with new user's information
+    """
     user_email = request.json['user_email']
     name = request.json['name']
     new_user = Users(user_email, name)
@@ -37,5 +41,10 @@ def add_user():
 @app.route('/users/byEmail/<email>', methods=['GET'])
 @cross_origin()
 def get_user_by_email(email):
+    """
+    Get information of a user based on his/her email
+    :param email: target user's email
+    :return: a JSON containing the target's user information
+    """
     user = Users.query.filter(Users.user_email == email).first()
     return user_schema.jsonify(user)

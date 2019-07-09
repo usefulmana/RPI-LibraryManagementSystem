@@ -10,12 +10,12 @@ class Scheduler:
         # Clear all previous cronjobs if any exists
         pi_cron.remove_all()
 
-        # Schedule the monitor app to run every minute
+        # Schedule the flask application to run at start up
         schedule_flask = pi_cron.new(
             command="cd /home/pi/Desktop/piot-a2/webapp && /home/pi/miniconda3/envs/piot-a2/bin/python3.5 app.py")
         schedule_flask.setall('@reboot')
 
-        # Schedule bluetooth app to run every 5 minute
+        # Schedule the web server to run at start up
         schedule_node = pi_cron.new(
             command="cd /home/pi/Desktop/piot-a2/webapp/front-end && node serve.js")
         schedule_node.setall('@reboot')

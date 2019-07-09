@@ -2,6 +2,9 @@ import json
 
 
 class Parser:
+    """
+    Parsing config file. Nothing of import
+    """
     _instance = None
     # Only one instance of this class should exist
     @staticmethod

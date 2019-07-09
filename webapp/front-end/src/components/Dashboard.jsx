@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import AddBookForm from './AddBookForm';
 import DataTable from './DataTable';
 import SearchBar from './SearchBar';
-import { GET_ALL_BOOKS, GET_DAILY_REPORT_PLOT, GET_WEEKLY_REPORT_PLOT } from './rest_api_routes';
+import { GET_ALL_BOOKS} from './rest_api_routes';
 import {Link} from 'react-router-dom'
 export default class Dashboard extends Component {
   constructor() {
@@ -22,6 +22,7 @@ export default class Dashboard extends Component {
   }
   onSubmit(e) {}
   toggle_form() {
+    // switch state when button is pressed
     this.setState({
       form_on: !this.state.form_on
     });

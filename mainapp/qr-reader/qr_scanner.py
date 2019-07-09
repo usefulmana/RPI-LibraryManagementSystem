@@ -24,6 +24,10 @@ class QRScanner:
     # Only one instance of this class should exist
     @staticmethod
     def get_instance():
+        """
+         This method will return an instance of QRScanner class
+        :return:  An instance of QRScanner class
+        """
         if QRScanner._instance is None:
             QRScanner()
         return QRScanner._instance
@@ -36,7 +40,11 @@ class QRScanner:
 
     @staticmethod
     def scan_qr():
-        # initialize the video stream and allow the camera sensor to warm up
+        """
+        Activate the camera and scan for QR code
+        :return: Nothing
+        """
+        # Give user time to prepare
         print("[INFO] starting video stream in 5...")
         qr_parser = QRParser.get_instance()
         vs = VideoStream(src=0).start()
@@ -53,6 +61,7 @@ class QRScanner:
 
         # loop over the frames from the video stream
         loop_count = 0
+        # Try to scan for QR 10 times, if nothing shows up turn off camera
         while loop_count < 10:
             loop_count += 1
             # grab the frame from the threaded video stream and resize it to

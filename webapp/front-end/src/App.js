@@ -22,6 +22,7 @@ function App() {
           <hr className="w-50" />
         </div>
         <Switch>
+          {/* application's routes. Unprotected routes = Home & Login */}
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <ProtectedRoute exact path="/dashboard" component={Dashboard} />

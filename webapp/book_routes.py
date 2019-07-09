@@ -29,6 +29,10 @@ books_Schema = BookSchema(many=True)
 @app.route('/books', methods=['POST'])
 @cross_origin()
 def add_book():
+    """
+    Use this route to add a new book
+    :return: a JSON with the book's information
+    """
     title = request.json['title']
     author = request.json['author']
     ISBN = request.json['ISBN']
@@ -43,6 +47,10 @@ def add_book():
 @app.route('/books', methods=['GET'])
 @cross_origin()
 def get_all_books():
+    """
+    Get all books from the database
+    :return: JSON with list of all books
+    """
     all_books = Book.query.all()
     result = books_Schema.dump(all_books)
     return jsonify(result)
@@ -75,6 +83,11 @@ def get_all_books():
 @app.route('/books/<id>', methods=['GET'])
 @cross_origin()
 def get_book_by_id(id):
+    """
+    Get a book based on its id
+    :param id: id of the target book
+    :return:
+    """
     book = Book.query.get(id)
     return book_Schema.jsonify(book)
 
@@ -82,6 +95,11 @@ def get_book_by_id(id):
 @app.route('/books/<id>', methods=['DELETE'])
 @cross_origin()
 def delete_book(id):
+    """
+    Delete a book based on its id
+    :param id: id of target book
+    :return:
+    """
     book = Book.query.get(id)
     db.session.delete(book)
     db.session.commit()
@@ -91,6 +109,11 @@ def delete_book(id):
 @app.route('/books/others/<query>', methods=['GET'])
 @cross_origin()
 def search_book_by_query(query):
+    """
+    Search books based on a query
+    :param query: user entered query
+    :return:
+    """
     books = Book.query.filter(
         Book.author.like("%{}%".format(query)) | Book.ISBN.like("%{}%".format(query)) | Book.title.like(
             "%{}%".format(query))).all()

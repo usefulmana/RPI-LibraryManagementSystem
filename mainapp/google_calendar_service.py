@@ -25,6 +25,11 @@ service = build("calendar", "v3", http=creds.authorize(Http()))
 
 
 def event_insert(user_email):
+    """
+    This function is responsible for adding an event to users' Google Calendar to remind them of the due date
+    :param user_email: user's email
+    :return: none
+    """
     date = datetime.now()
     time = date.time().strftime('%H:%M:%S')
     end = '{:%H:%M:%S}'.format(datetime.now() + timedelta(hours=1))
@@ -59,4 +64,4 @@ def event_insert(user_email):
 
 
 if __name__ == "__main__":
-    insert()
+    pass

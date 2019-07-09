@@ -24,12 +24,12 @@ export default class AddBookForm extends Component {
   }
 
   toggle = () => {
-    // Clear errors
     this.setState({
       modal: !this.state.modal
     });
   };
   validate = (date) =>{
+    // Validating user's input with regular expression
     let dateRegex = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
     if (date.match(dateRegex))
     {
@@ -49,7 +49,7 @@ export default class AddBookForm extends Component {
     let another_format = ('0' + this.state.published_date.getDate()).slice(-2) + "/" + ('0' + (this.state.published_date.getMonth() + 1)).slice(-2) +
       '/' +
       this.state.published_date.getFullYear();
-      console.log(another_format)
+    // Proceed if the user's input is legitimate
     if (this.validate(another_format)){
       let formatted_date = this.state.published_date.getFullYear() + ":" + (this.state.published_date.getMonth() + 1) +
         ':' +

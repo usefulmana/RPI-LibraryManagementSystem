@@ -3,6 +3,11 @@ import qrcode
 
 
 def qr_generator(data):
+    """
+    This function will take data and encode it into QR code. The QR code will be saved as a .png file in the root folder
+    :param data: generic data
+    :return: None
+    """
     # Create qr code instance
     qr = qrcode.QRCode(
         version = 1,

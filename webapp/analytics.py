@@ -13,6 +13,10 @@ class Analytics:
 
     @staticmethod
     def get_instance():
+        """
+         This method will return an instance of Analytics class
+        :return:  An instance of Analytics class
+        """
         if Analytics._instance is None:
             Analytics()
         return Analytics._instance
@@ -29,7 +33,12 @@ class Analytics:
             self._password = self.parser.password
             self._database = self.parser.database
 
-    def get_statistics_for_a_day(self):
+    def get_statistics_for_a_day(self, filename):
+        """
+        Extracting borrow and return history for a day and write it to a csv file
+        :param filename: name of the target csv file
+        :return: none
+        """
         try:
             my_database = mysql.connector.connect(
                 host=self._host,
@@ -49,7 +58,7 @@ class Analytics:
                 cursor.execute(sql3)
                 result3 = cursor.fetchone()
                 final_result = {"date": result3[0], "borrow": result1[0], "return": result2[0]}
-                with open('daily.csv', 'w+', newline='') as daily_report:
+                with open(filename, 'w+', newline='') as daily_report:
                     writer = csv.writer(daily_report)
                     writer.writerow(["date", "borrows", "returns"])
                     writer.writerow([final_result['date'], final_result["borrow"], final_result["return"]])
@@ -59,7 +68,12 @@ class Analytics:
         finally:
             my_database.close()
 
-    def get_statistics_for_a_week(self):
+    def get_statistics_for_a_week(self, filename):
+        """
+        Return borrow & return history of the last 7 days
+        :param filename: name of the target csv file
+        :return:
+        """
         try:
             my_database = mysql.connector.connect(
                 host=self._host,
@@ -78,7 +92,7 @@ class Analytics:
                 final_result = []
                 for r in range(len(result1)):
                     final_result.append([result1[r][0], result1[r][1], result2[r][0]])
-                with open('weekly.csv', 'w+', newline='') as weekly_report:
+                with open(filename, 'w+', newline='') as weekly_report:
                     writer = csv.writer(weekly_report)
                     writer.writerow(["date", "borrows", "returns"])
                     for result in final_result:
@@ -91,16 +105,22 @@ class Analytics:
 
     @staticmethod
     def weekly_plot():
-        # Do not delete the 2 lines below. it generate the data
+        """
+        Draw weekly plot
+        :return: none
+        """
         ana = Analytics.get_instance()
-        ana.get_statistics_for_a_week()
+        ana.get_statistics_for_a_week('weekly.csv')
         Analytics.get_instance().plot_barplot('weekly.csv', 'weekly.png')
 
     @staticmethod
     def daily_plot():
-        # Do not delete 2 lines below
+        """
+        Draw daily plot
+        :return: none
+        """
         ana = Analytics.get_instance()
-        ana.get_statistics_for_a_day()
+        ana.get_statistics_for_a_day('daily.csv')
         Analytics.get_instance().plot_barplot('daily.csv', 'daily.png')
 
     @staticmethod

@@ -10,6 +10,11 @@ from email import encoders
 
 
 def send_email(user_email):
+    """
+    This class will send an email with a QR code attached to users who choose to opt in the Quick Return service
+    :param user_email: email of user
+    :return: none
+    """
     fromaddr = "test.piot.314@gmail.com"
     toaddr = user_email
     # instance of MIMEMultipart
