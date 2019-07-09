@@ -19,19 +19,27 @@ class QRParser:
             QRParser._instance = self
 
     @staticmethod
-    def convert_data_to_dict(data):
-        try:
-            data = ast.literal_eval(data)
-        except:
-            raise Exception("Invalid data format! JSON only")
-        return data
+    def check_if_string_is_dict(data):
+        if data.startswith('{') and data.endswith('}'):
+            return True
+        return False
 
     @staticmethod
-    def return_book_from_QR_code(data):
-        qr_data = QRParser.get_instance().convert_data_to_dict(data)
-        if "borrow_id" not in qr_data.keys():
-            print('Invalid QR code!')
+    def convert_data_to_dict(data):
+        if QRParser.get_instance().check_if_string_is_dict(data):
+            return ast.literal_eval(data)
         else:
-            req = requests.put(url='http://127.0.0.1:5000/return/{}'.format(qr_data['borrow_id']))
-            print("Success!")
-            time.sleep(2)
+            return None
+
+    @staticmethod
+    def return_book_from_QR_code(qr_code_data):
+        qr_data = QRParser.get_instance().convert_data_to_dict(qr_code_data)
+        if qr_data is not None:
+            if "borrow_id" not in qr_data.keys():
+                print('Invalid QR code!')
+            else:
+                req = requests.put(url='http://127.0.0.1:5000/return/{}'.format(qr_data['borrow_id']))
+                print("Success!")
+                time.sleep(2)
+        else:
+            print("Invalid QR code! Please contact technical support for help!")

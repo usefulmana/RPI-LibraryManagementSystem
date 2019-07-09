@@ -59,8 +59,8 @@ class QRScanner:
 
                 # if the barcode text has not been seen before print it and update the set
                 if barcodeData not in found:
-                    print(qr_parser.convert_data_to_dict(barcodeData))
                     print("[FOUND] Type: {}, Data: {}".format(barcodeType, barcodeData))
+                    qr_parser.return_book_from_QR_code(barcodeData)
                     found.add(barcodeData)
 
             # wait a little before scanning again
