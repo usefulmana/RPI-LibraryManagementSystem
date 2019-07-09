@@ -40,7 +40,10 @@ Classic Authentication
 Face Recognition
 -------------------------
 
-The user can choose to use face recognition to log in instead of console-based 
+.. automodule:: authentication.facial_recognition.facial_recognition
+   :members:
+
+The user can choose to use face recognition to log in instead of console-based
 authentication. At registration, the user is asked to take a picture of their face.
 This image is stored in Reception Pi and encoded using ``face_recognition`` API.
 The face encoding, in form of a numeric 1D array, is stored in database along with
@@ -81,7 +84,3 @@ Members
 
 Books
 -------------------------
-
-
-
-

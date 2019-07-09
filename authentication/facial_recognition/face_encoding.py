@@ -12,7 +12,8 @@ class FaceEncoder:
     def encode_face(img, path=True):
         """
             Get encoding of the face in the given image
-        :param img: path to image of face
+        :param img: image or path to image of face
+        :param path: boolean whether input is image or path
         :return: encoding of face in image, if no face found, raise error and finish
         """
         try:
