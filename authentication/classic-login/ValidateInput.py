@@ -12,6 +12,7 @@ class ValidateInput:
             self.curs.execute("SELECT email FROM library_users")
             data = self.curs.fetchall()
             email = input("Email: ")
+            backup = 0
             if not email.endswith("@gmail.com"):
                 print("You can only use gmail to register and login")
                 continue
@@ -20,11 +21,9 @@ class ValidateInput:
                     break
                 elif email == row[0]:
                     print("This email has already been used to register")
-                    email = " "
+                    backup = 1
                     break
-            if email == " ":
-                continue
-            else:
+            if backup == 0:
                 break
         return email
 

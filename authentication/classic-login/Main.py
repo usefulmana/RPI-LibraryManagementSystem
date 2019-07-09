@@ -8,10 +8,10 @@ class Main(Login, Register):
             option = input("Type L for Login, R for Register: ")
             if option == "L":
                 self.login()
-                break
+                continue
             elif option == "R":
                 self.register()
-                break
+                continue
             print("Wrong input. Please try again!")
 
 

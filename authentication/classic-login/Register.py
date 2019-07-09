@@ -19,3 +19,4 @@ class Register(ValidateInput):
                 print("You've successfully registered")
                 socket_client.socket_client(email)
                 break
+            print("Please retype your password correctly")
