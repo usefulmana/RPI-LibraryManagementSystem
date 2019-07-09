@@ -23,7 +23,10 @@ class Login:
                     if row[2] != status:
                         status = "logged out"
                     break
-            if backup == 1 and status == "logged out":
+            if backup == 0:
+                print("Incorrect email or password")
+                continue
+            elif backup == 1 and status == "logged out":
                 print("You've successfully logged in")
                 self.curs.execute("UPDATE library_users SET status=%s WHERE email=%s", ("logged in", email))
                 self.conn.commit()
@@ -32,6 +35,3 @@ class Login:
             elif backup == 1 and status == "logged in":
                 print("Someone is currently using this account")
                 break
-            elif backup == 0:
-                print("Incorrect email or password")
-                continue

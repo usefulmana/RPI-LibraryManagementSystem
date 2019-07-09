@@ -23,7 +23,7 @@ def socket_client(user_email):
         print("Connected.")
 
         user = get_user(user_email)
-        print("Logging in as {}".format(user["user_email"]))
+        print("Logging in as {}".format(user_email))
         socket_utils.sendJson(s, user)
         while True:
             obj = socket_utils.recvJson(s)
