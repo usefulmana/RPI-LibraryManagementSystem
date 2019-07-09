@@ -7,7 +7,7 @@ def take_pictures(email):
     cv2.namedWindow("register")
     img_counter = 0
     name = email[:-10]
-    folder = "/home/pi/Desktop/authentication/classic-login/images/{}".format(name)
+    folder = "/home/pi/Desktop/authentication/classic-login/images"
     if not os.path.exists(folder):
         os.makedirs(folder)
 
@@ -20,17 +20,18 @@ def take_pictures(email):
 
         if k % 256 == 27:
             # ESC pressed
-            print("Escape hit, closing...")
+            print("Session ended. Proceed to login")
             break
 
         elif k % 256 == 32:
             # SPACE pressed
-            img_name = "{}/{}.jpg".format(folder, img_counter)
+            img_name = "{}/{}_{}.jpg".format(folder, name,  img_counter)
             cv2.imwrite(img_name, frame)
             print("{} written!".format(img_name))
             img_counter += 1
 
         if img_counter == 3:
+            print("All done! Proceed to login")
             break
 
     cam.release()
