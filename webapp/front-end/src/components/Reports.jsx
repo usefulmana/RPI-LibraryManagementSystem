@@ -6,7 +6,9 @@ export default class Reports extends Component {
     render() {
         return (
             <div className='container'>
-                <div className="row">
+                <img src={GET_WEEKLY_CHART} alt="Weekly chart" /><br />
+                <p><b>Weekly</b></p>
+                {/* <div className="row">
                     <div className='col-6'>
                         <img src={GET_DAILY_CHART} alt="Daily chart" /><br />
                         <p><b>Daily</b></p>
@@ -15,7 +17,7 @@ export default class Reports extends Component {
                         <img src={GET_WEEKLY_CHART} alt="Weekly chart" /><br />
                         <p><b>Weekly</b></p>
                     </div>  
-                </div>
+                </div> */}
                                         
             </div>
         )

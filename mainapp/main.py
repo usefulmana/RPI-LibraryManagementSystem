@@ -57,7 +57,7 @@ if __name__ == '__main__':
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(ADDRESS)
         while True:
-            print("Listening on {}...".format(ADDRESS))
+            print("Waiting for Reception Pi...")
             s.listen()
             conn, addr = s.accept()
             print("Connected to {}".format(addr))

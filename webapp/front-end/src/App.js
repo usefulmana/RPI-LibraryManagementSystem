@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard';
 import SearchResults from './components/SearchResults';
 import Reports from './components/Reports';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import WeeklyReport from './components/WeeklyReport';
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <ProtectedRoute exact path="/dashboard" component={Dashboard} />
-          <ProtectedRoute exact path="/reports" component={Reports}/>
+          <ProtectedRoute exact path="/daily_report" component={Reports}/>
+          <ProtectedRoute exact path="/weekly_report" component={WeeklyReport}/>
           <ProtectedRoute
             path="/search/:query?"
             component={props => (

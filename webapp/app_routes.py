@@ -81,6 +81,7 @@ def login():
 
 @app.route('/weekly')
 def get_weekly_plot():
+    """Disable this because Rpi cant handle it"""
     ana = Analytics.get_instance()
     ana.weekly_plot()
     filename = 'images/weekly.png'
