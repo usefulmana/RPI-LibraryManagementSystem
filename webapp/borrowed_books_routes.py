@@ -27,7 +27,7 @@ class BorrowedBooks(db.Model):
 
 class BorrowedBooksSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'book_id', 'user_id', 'borrow_date', 'return_date', 'borrow_status', 'return_status')
+        fields = ('id', 'book_id', 'user_id', 'borrow_date', 'due_date', 'return_date', 'borrow_status', 'return_status')
 
 
 borrowed_book_schema = BorrowedBooksSchema()
@@ -62,6 +62,13 @@ def return_book(borrow_id):
     borrow.return_date = datetime.now()
     db.session.commit()
 
+    return borrowed_book_schema.jsonify(borrow)
+
+
+@app.route('/borrow/<borrow_id>')
+@cross_origin()
+def get_borrow_from_id(borrow_id):
+    borrow = BorrowedBooks.query.get(borrow_id)
     return borrowed_book_schema.jsonify(borrow)
 
 

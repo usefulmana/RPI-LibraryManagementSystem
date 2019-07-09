@@ -12,6 +12,8 @@ from pyzbar import pyzbar
 import datetime
 import imutils
 import time
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 import cv2
 from qr_parser import QRParser
 
@@ -35,15 +37,24 @@ class QRScanner:
     @staticmethod
     def scan_qr():
         # initialize the video stream and allow the camera sensor to warm up
-        print("[INFO] starting video stream...")
+        print("[INFO] starting video stream in 5...")
         qr_parser = QRParser.get_instance()
         vs = VideoStream(src=0).start()
-        time.sleep(2.0)
+        time.sleep(1)
+        print("[INFO] starting video stream in 4...")
+        time.sleep(1)
+        print("[INFO] starting video stream in 3...")
+        time.sleep(1)
+        print("[INFO] starting video stream in 2...")
+        time.sleep(1)
+        print("[INFO] starting video stream in 1...")
 
-        found = set()
+        found = None
 
         # loop over the frames from the video stream
-        while True:
+        loop_count = 0
+        while loop_count < 10:
+            loop_count += 1
             # grab the frame from the threaded video stream and resize it to
             # have a maximum width of 400 pixels
             frame = vs.read()
@@ -51,23 +62,23 @@ class QRScanner:
 
             # find the barcodes in the frame and decode each of the barcodes
             barcodes = pyzbar.decode(frame)
+
             # loop over the detected barcodes
             for barcode in barcodes:
                 # the barcode data is a bytes object so we convert it to a string
-                barcodeData = barcode.data.decode("utf-8")
-                barcodeType = barcode.type
-
+                barcode_data = barcode.data.decode("utf-8")
+                barcode_type = barcode.type
+                print("[FOUND] Type: {}, Data: {}".format(barcode_type, barcode_data))
                 # if the barcode text has not been seen before print it and update the set
-                if barcodeData not in found:
-                    print("[FOUND] Type: {}, Data: {}".format(barcodeType, barcodeData))
-                    qr_parser.return_book_from_QR_code(barcodeData)
-                    found.add(barcodeData)
-
+                found = barcode_data
+                print(found)
+            if qr_parser.return_book_from_QR_code(found) and found is not None:
+                break
             # wait a little before scanning again
-            time.sleep(1)
 
         # close the output CSV file do a bit of cleanup
-        print("[INFO] cleaning up...")
+        print("[INFO] Quitting...")
+        time.sleep(5)
         vs.stop()
 
 

@@ -20,7 +20,9 @@ class QRParser:
 
     @staticmethod
     def check_if_string_is_dict(data):
-        if data.startswith('{') and data.endswith('}'):
+        if data is None:
+            return False
+        elif data.startswith('{') and data.endswith('}'):
             return True
         return False
 
@@ -38,8 +40,17 @@ class QRParser:
             if "borrow_id" not in qr_data.keys():
                 print('Invalid QR code!')
             else:
-                req = requests.put(url='http://127.0.0.1:5000/return/{}'.format(qr_data['borrow_id']))
-                print("Success!")
-                time.sleep(2)
+                req = requests.get(url='http://127.0.0.1:5000/borrow/{}'.format(qr_data['borrow_id']))
+                if req.json()['return_status'] == 'returned':
+                    print("This book is already returned. Transaction cancelled!")
+                    time.sleep(2)
+                    return True
+                else:
+                    req = requests.put(url='http://127.0.0.1:5000/return/{}'.format(qr_data['borrow_id']))
+                    print("Success!")
+                    time.sleep(2)
+                    return True
         else:
-            print("Invalid QR code! Please contact technical support for help!")
+            print("Invalid QR code or no QR code found! Please try scanning again!")
+            time.sleep(2)
+            return True

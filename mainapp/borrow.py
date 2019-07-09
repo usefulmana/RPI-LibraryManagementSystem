@@ -29,7 +29,7 @@ class BorrowService:
         if opt_in_qr.strip().upper() == 'Y':
             qr_generator({"borrow_id": req.json()['id']})
             send_email(user_email)
-        return "Please return this book before: {}".format(req.json()['return_date'])
+        return "Please return this book before: {}".format(req.json()['due_date'])
 
     @staticmethod
     def get_user_id_from_email(user_email, name):

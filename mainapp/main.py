@@ -1,9 +1,11 @@
 from search_service import Search
 from return_service import ReturnService
 import time
-import socket, pprint, socket_utils
+import socket, socket_utils
 from config_parser import Parser
-
+from qr_scanner import QRScanner
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 HOST = Parser.get_instance().host
 PORT = Parser.get_instance().port
 ADDRESS = (HOST, PORT)
@@ -23,6 +25,7 @@ class Menu:
             raise Exception("This class is singleton")
         else:
             Menu._instance = self
+            self._qr_scanner = QRScanner.get_instance()
             self._search_service = Search.get_instance()
             self._return_service = ReturnService.get_instance()
 
@@ -34,7 +37,9 @@ class Menu:
                 print('1. Search books')
                 print('2. Borrow a book')
                 print('3. Return a book')
-                print('4. Log out')
+                print('4. Quick Return (QR)')
+                print('5. Voice Search')
+                print('6. Log out')
                 choice = int(input("Your choice: ").strip())
                 if choice == 1:
                     self._search_service.display_search_menu(user_email, name)
@@ -44,6 +49,10 @@ class Menu:
                     if not self._return_service.return_book(user_email, name):
                         break
                 elif choice == 4:
+                    self._qr_scanner.scan_qr()
+                elif choice == 5:
+                    pass
+                elif choice == 6:
                     break
                 else:
                     print('Invalid Input!')
@@ -60,13 +69,12 @@ if __name__ == '__main__':
             print("Waiting for Reception Pi...")
             s.listen()
             conn, addr = s.accept()
-            print("Connected to {}".format(addr))
+            print("Connected")
             object = socket_utils.recvJson(conn)
             if("end" in object):
                 break
 
-            print("Received:")
-            pprint.pprint(object)
+            print("Received")
             menu = Menu.get_instance()
             menu.display_menu(object['name'], object['user_email'])
 
