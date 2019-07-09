@@ -1,5 +1,6 @@
 from ValidateInput import ValidateInput
 import bcrypt, socket_client
+import TakePictures
 
 
 class Register(ValidateInput):
@@ -17,6 +18,15 @@ class Register(ValidateInput):
                 self.conn.commit()
                 self.conn.close()
                 print("You've successfully registered")
+                option = input("Would you like to take pictures for facial recognition login? Y/N: ")
+                while True:
+                    if option == "Y":
+                        TakePictures.take_pictures(email)
+                        break
+                    if option == "N":
+                        break
+                    print("Wrong input. Please try again!")
                 socket_client.socket_client(email)
                 break
             print("Please retype your password correctly")
+
