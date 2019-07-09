@@ -12,6 +12,7 @@ db = SQLAlchemy(app)
 from book_routes import *
 from user_routes import *
 from borrowed_books_routes import *
+from returned_book_routes import *
 from app_routes import *
 
 
