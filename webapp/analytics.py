@@ -39,10 +39,10 @@ class Analytics:
             )
             if my_database.is_connected():
                 cursor = my_database.cursor()
-                sql1 = "SELECT COUNT(id) from borrowed_books where status = 'borrowed' and borrow_date = current_date"
+                sql1 = "SELECT COUNT(id) from borrowed_books where borrow_status = 'borrowed' and borrow_date = current_date"
                 cursor.execute(sql1)
                 result1 = cursor.fetchone()
-                sql2 = "SELECT COUNT(id) from borrowed_books where status = 'returned' and borrow_date = current_date"
+                sql2 = "SELECT COUNT(id) from borrowed_books where return_status = 'returned' and borrow_date = current_date"
                 cursor.execute(sql2)
                 result2 = cursor.fetchone()
                 sql3 = "SELECT current_date from borrowed_books"
@@ -69,10 +69,10 @@ class Analytics:
             )
             if my_database.is_connected():
                 cursor = my_database.cursor()
-                sql1 = "select borrow_date as date, count(`id`) as count from borrowed_books where status = 'borrowed' group by borrow_date order by borrow_date asc limit 7"
+                sql1 = "select borrow_date as date, count(`id`) as count from borrowed_books where borrow_status = 'borrowed' group by borrow_date order by borrow_date asc limit 7"
                 cursor.execute(sql1)
                 result1 = cursor.fetchall()
-                sql2 = "select count(`id`) as count from borrowed_books where status = 'returned' group by borrow_date order by borrow_date asc limit 7"
+                sql2 = "select count(`id`) as count from borrowed_books where return_status = 'returned' group by borrow_date order by borrow_date asc limit 7"
                 cursor.execute(sql2)
                 result2 = cursor.fetchall()
                 final_result = []

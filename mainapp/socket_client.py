@@ -2,7 +2,7 @@
 # Documentation: https://docs.python.org/3/library/socket.html
 import socket, socket_utils
 
-HOST = "192.168.0.12"
+HOST = "10.247.212.209"
 # HOST = "127.0.0.1" # The server's hostname or IP address.
 PORT = 64000       # The port used by the server.
 ADDRESS = (HOST, PORT)

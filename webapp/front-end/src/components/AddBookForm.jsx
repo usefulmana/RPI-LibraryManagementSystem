@@ -30,14 +30,14 @@ export default class AddBookForm extends Component {
   };
   handleChange(date) {
       this.setState({
-          published_date: date.toDateString()
+          published_date: date
       });
   }
   onSubmit(e) {
     e.preventDefault();
     let formatted_date = this.state.published_date.getFullYear() + ":" + (this.state.published_date.getMonth() + 1) +
           ':' +
-          this.state.published_date.getDate();
+      this.state.published_date.getDate();
     const book = {
         title: this.state.title,
         author: this.state.author,

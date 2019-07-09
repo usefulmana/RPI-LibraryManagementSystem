@@ -33,7 +33,7 @@ class AdminSchema(ma.Schema):
 
 admin_Schema = AdminSchema()
 
-# This route should be disabled to prevent additional account creation
+#This route should be disabled to prevent additional account creation
 # @app.route('/admin', methods=['POST'])
 # def create_admin():
 #     data = request.get_json()
@@ -93,38 +93,6 @@ def get_daily_plot():
     ana.daily_plot()
     filename = 'images/daily.png'
     return send_file(filename, mimetype='image/png')
-# @app.route('/daily', methods=['GET'])
-# def daily_plot():
-#     # Do not delete 2 lines below
-#     ana = Analytics.get_instance()
-#     ana.get_statistics_for_a_day()
-#
-#     plot_barplot('daily.csv', 'daily.png')
-#     return jsonify({"message": "Image generated"})
-#
-#
-# @app.route('/weekly', methods=['GET'])
-# def weekly_plot():
-#     # Do not delete the 2 lines below. it generate the data
-#     ana = Analytics.get_instance()
-#     ana.get_statistics_for_a_week()
-#
-#     plot_barplot('weekly.csv', 'weekly.png')
-#     return jsonify({"message": "Image generated"})
-#
-#
-# def plot_barplot(file, output_file):
-#     """
-#         Generate bar plot, can be used for both daily and weekly
-#         if the table has the same columns ['date', 'borrows', 'returns']
-#     :param file: path to CSV file
-#     :return: pop up figure
-#     """
-#     sns.set()
-#     daily_df = pd.read_csv(file)
-#     daily_df = pd.melt(daily_df, id_vars='date', var_name='type', value_name='count')
-#
-#     with sns.color_palette('husl'):
-#         fig, ax = plt.subplots(1)
-#         sns.barplot(x='date', y='count', hue='type', data=daily_df, ax=ax)
-#     plt.savefig('front-end/public/images/' + output_file)
+
+
+
