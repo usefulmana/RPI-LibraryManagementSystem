@@ -6,7 +6,7 @@
 import face_recognition as FR
 import numpy as np
 import pandas as pd
-from face_encoding import FaceEncoder
+from authentication.facial_recognition.face_encoding import FaceEncoder
 
 
 class FaceRecogniser:

@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>PIoT - Library Management System &#8212; PIoT - Library Management System  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="piot-library-management-system">
+<h1>PIoT - Library Management System<a class="headerlink" href="#piot-library-management-system" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="application-interface">
+<h2>Application Interface<a class="headerlink" href="#application-interface" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="classic-authentication">
+<h3>Classic Authentication<a class="headerlink" href="#classic-authentication" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="face-recognition">
+<h3>Face Recognition<a class="headerlink" href="#face-recognition" title="Permalink to this headline">¶</a></h3>
+<p>The user can choose to use face recognition to log in instead of console-based
+authentication. At registration, the user is asked to take a picture of their face.
+This image is stored in Reception Pi and encoded using <code class="docutils literal notranslate"><span class="pre">face_recognition</span></code> API.
+The face encoding, in form of a numeric 1D array, is stored in database along with
+other credentials such as email, name and password.</p>
+<p>Upon logging in, an image of the person’s face is captured and encoded. The resulted
+encoding is compared with those stored in database to find a match. If no match found,
+the person is recognised as Unknown and cannot be logged in to the system.</p>
+<p><code class="docutils literal notranslate"><span class="pre">FaceEncoder</span></code> class provides method to run face encoding for a single given image.
+Its instance can load images stored in local storage and run face encoding for each of them.</p>
+<dl class="class">
+<dt id="authentication.facial_recognition.face_encoding.FaceEncoder">
+<em class="property">class </em><code class="sig-prename descclassname">authentication.facial_recognition.face_encoding.</code><code class="sig-name descname">FaceEncoder</code><a class="headerlink" href="#authentication.facial_recognition.face_encoding.FaceEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="authentication.facial_recognition.face_encoding.FaceEncoder.encode_face">
+<em class="property">static </em><code class="sig-name descname">encode_face</code><span class="sig-paren">(</span><em class="sig-param">img</em>, <em class="sig-param">path=True</em><span class="sig-paren">)</span><a class="headerlink" href="#authentication.facial_recognition.face_encoding.FaceEncoder.encode_face" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Get encoding of the face in the given image</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> – image or path to image of face</p></li>
+<li><p><strong>path</strong> – boolean whether input is image or path</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>encoding of face in image, if no face found, raise error and finish</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="authentication.facial_recognition.face_encoding.FaceEncoder.load_data">
+<code class="sig-name descname">load_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authentication.facial_recognition.face_encoding.FaceEncoder.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch all images from “known” directory to dataframe
+and encode each one of them</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="authentication.facial_recognition.face_encoding.FaceEncoder.save_as_csv">
+<code class="sig-name descname">save_as_csv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authentication.facial_recognition.face_encoding.FaceEncoder.save_as_csv" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Save generated known faces dataframe as CSV file</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None, but face_db.csv file is created in the same directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p><code class="docutils literal notranslate"><span class="pre">FaceRecogniser</span></code> class is used for running face recognition for authentication.</p>
+<dl class="class">
+<dt id="authentication.facial_recognition.facial_recognition.FaceRecogniser">
+<em class="property">class </em><code class="sig-prename descclassname">authentication.facial_recognition.facial_recognition.</code><code class="sig-name descname">FaceRecogniser</code><a class="headerlink" href="#authentication.facial_recognition.facial_recognition.FaceRecogniser" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="authentication.facial_recognition.facial_recognition.FaceRecogniser.load_face_encodings">
+<em class="property">static </em><code class="sig-name descname">load_face_encodings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authentication.facial_recognition.facial_recognition.FaceRecogniser.load_face_encodings" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Load information including person’s name and face encoding from CSV file</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>lists of names and face encodings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="authentication.facial_recognition.facial_recognition.FaceRecogniser.recognise_face">
+<code class="sig-name descname">recognise_face</code><span class="sig-paren">(</span><em class="sig-param">img</em>, <em class="sig-param">path=True</em><span class="sig-paren">)</span><a class="headerlink" href="#authentication.facial_recognition.facial_recognition.FaceRecogniser.recognise_face" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Check if the person in image is within the member database
+using face recognition</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> – input image or path to image</p></li>
+<li><p><strong>path</strong> – boolean whether input an image file or path to image file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>name/user ID of the person if existing in database, else ‘Unknown’</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="library-features">
+<h2>Library Features<a class="headerlink" href="#library-features" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="search-a-book">
+<h3>Search a book<a class="headerlink" href="#search-a-book" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="borrow-a-book">
+<h3>Borrow a book<a class="headerlink" href="#borrow-a-book" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="return-a-book">
+<h3>Return a book<a class="headerlink" href="#return-a-book" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="qr-code-scanning">
+<h4>QR code scanning<a class="headerlink" href="#qr-code-scanning" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="section" id="database">
+<h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="members">
+<h3>Members<a class="headerlink" href="#members" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="books">
+<h3>Books<a class="headerlink" href="#books" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">PIoT - Library Management System</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team 3.14.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
