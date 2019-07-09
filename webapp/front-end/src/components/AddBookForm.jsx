@@ -72,7 +72,7 @@ export default class AddBookForm extends Component {
     }
     else{
       this.setState({
-        dateError: 'Wrong date format!'
+        dateError: 'Wrong date format! (dd/mm/yyy) only'
       })
     }
     
