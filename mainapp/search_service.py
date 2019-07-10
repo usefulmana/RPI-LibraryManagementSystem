@@ -1,6 +1,7 @@
 import requests
 from borrow import BorrowService
 import time
+from speech_recognizer import SpeechRecognizer
 
 
 class Search:
@@ -113,6 +114,42 @@ class Search:
             print("Leave blank and press Enter to view all books")
             user_query = input("Your input: ")
             result = search.search_books(user_query)
+            # If print functions return false, meaning no book matched the criteria => break loops
+            if search.print_results(result) == False:
+                break
+            else:
+                try:
+                    print("Choose an option")
+                    # Provide user with options to keep going or return to main menu
+                    choice = int(input(
+                        "1. Borrow a book" + "\n"
+                                             "2. Return to main menu" + "\n"
+                                                                        "Your choice: "
+                    ).strip())
+                    if choice == 1:
+                        book_id = input("Enter the ID of the book you'd like to borrow: ").strip()
+                        # If the id entered is correct, proceed to confirmation
+                        if search.check_book_exist(book_id) is not None:
+                            search.confirmation(search.check_book_exist(book_id), user_email, name)
+                            break
+                        else:
+                            # Return to main menu
+                            print("ID is invalid or does not exist!")
+                            break
+                    else:
+                        print("Returning to main menu...")
+                        time.sleep(2)
+                        break
+                except Exception as e:
+                    print(e)
+
+    @staticmethod
+    def search_by_voice(user_email, name):
+        search = Search.get_instance()
+        text = SpeechRecognizer.get_instance().record_and_decipher_audio()
+        while True:
+
+            result = search.search_books(text)
             # If print functions return false, meaning no book matched the criteria => break loops
             if search.print_results(result) == False:
                 break

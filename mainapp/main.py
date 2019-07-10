@@ -61,7 +61,7 @@ class Menu:
                 elif choice == 4:
                     self._qr_scanner.scan_qr()
                 elif choice == 5:
-                    pass
+                    self._search_service.search_by_voice(user_email, name)
                 elif choice == 6:
                     break
                 else:
