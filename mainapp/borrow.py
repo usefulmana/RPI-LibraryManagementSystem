@@ -38,7 +38,7 @@ class BorrowService:
         choice = input("Would you like to be reminded of the due date via Google Calendar (Y/n)? ")
         if choice.strip().upper() == 'Y':
             new_req = requests.put(
-                'http://127.0.0.1:5000/borrow/{}/event/{}'.format(req.json()['id'], event_insert(user_email)))
+                'http://127.0.0.1:5000/borrow/{}/event/{}'.format(req.json()['id'], event_insert(user_email, book_id, name)))
         opt_in_qr = input("Would you like to use the Quick Return service (Y/n)? ")
         if opt_in_qr.strip().upper() == 'Y':
             qr_generator(req.json()['id'])

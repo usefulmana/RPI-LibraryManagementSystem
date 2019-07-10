@@ -15,32 +15,39 @@ from httplib2 import Http
 from oauth2client import file, client, tools
 from config_parser import Parser
 import base64
+import requests
+
 # If modifying these scopes, delete the file token.json.
 SCOPES = "https://www.googleapis.com/auth/calendar"
 store = file.Storage("token.json")
 creds = store.get()
-if(not creds or creds.invalid):
+if (not creds or creds.invalid):
     flow = client.flow_from_clientsecrets("credentials.json", SCOPES)
     creds = tools.run_flow(flow, store)
 service = build("calendar", "v3", http=creds.authorize(Http()))
 
 
-def event_insert(user_email):
+def event_insert(user_email, book_id, name):
     """
     This function is responsible for adding an event to users' Google Calendar to remind them of the due date
     :param user_email: user's email
+    :param book_id: book's id
+    :param name: user's name
     :return: none
     """
     date = datetime.now()
     time = date.time().strftime('%H:%M:%S')
     end = '{:%H:%M:%S}'.format(datetime.now() + timedelta(hours=1))
-    tomorrow = (date + timedelta(days=Parser.get_instance().calendar_reminder)).strftime("%Y-%m-%d")
-    time_start = "{}T{}+07:00".format(tomorrow, time)
-    time_end = "{}T{}+07:00".format(tomorrow, end)
+    due_date = (date + timedelta(days=Parser.get_instance().calendar_reminder)).strftime("%Y-%m-%d")
+    time_start = "{}T{}+07:00".format(due_date, time)
+    time_end = "{}T{}+07:00".format(due_date, end)
+    readable_time_end = '{} {} GMT+07:00'.format(due_date, end)
+    req = requests.get(url='http://127.0.0.1:5000/books/{}'.format(book_id))
+    data = req.json()
     event = {
-        "summary": "Return Borrowed Book",
+        "summary": "Reminder for {} to return {}".format(name, data['title']),
         "location": "RMIT University Vietnam Library",
-        "description": "Adding reminder to return borrowed book(s)",
+        "description": "Please return {} to the University Library before {}".format(data['title'], readable_time_end),
         "start": {
             "dateTime": time_start,
             "timeZone": "Asia/Ho_Chi_Minh",
@@ -76,9 +83,11 @@ def delete_event(event_id):
 
 
 if __name__ == "__main__":
-    delete_event('j35bsiacl4qt326arofaa8o7ks')
+    pass
+    # delete_event('j35bsiacl4qt326arofaa8o7ks')
     # string = 'https://www.google.com/calendar/event?eid=NzFkdDFhNnEwNTFvb3Fza3B0a2xycjY0bDQgYWxleC5uZ3V5ZW4uMzE0MUBt'
     # split_string = string.split('=')
     # decoded_string = base64.b64decode(split_string[1])
     # event_id = str(decoded_string).split(' ')[0][2:].strip()
     # print(event_id)
+
