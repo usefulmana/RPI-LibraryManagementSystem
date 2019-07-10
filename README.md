@@ -73,9 +73,14 @@
     ````
     {
     "host": "<<Your Pi's IP Address>>",
-    "port": <<Any port here>>
+    "port": <<Any port here>>,
+    "email": <<Your email address>>
     }
     ````
+    - The above email address in ````config.json```` will be used to send QR codes to users. I recommend turning off any security
+    features for this account.
+    - To use the Google Calendar service, get your credentials [here](https://developers.google.com/calendar/quickstart/python)
+    and then save the ````credentials.json```` in the **mainapp** folder.
 - **Reception Pi**
     - Similar to the Master Pi, you can use a local or a cloud database depending on your need.
     - Write down the Master Pi's IP address and port.

@@ -5,6 +5,8 @@ node_modules/
 .vscode/
 __pycache__/
 package-lock.json
+credentials.json
+token.json
 yarn-error.log
 yarn.lock
-mainapp/speech-recognition/speech_recog_cred.json
+mainapp/speech_recognition/speech_recog_cred.json
