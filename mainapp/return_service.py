@@ -1,7 +1,7 @@
 import requests
 from borrow import BorrowService
 import time
-
+from google_calendar_service import delete_event
 
 class ReturnService:
     _instance = None
@@ -92,6 +92,8 @@ class ReturnService:
             if return_service.check_if_book_exist_in_borrow_history(choice, data):
                 # If correct, execute return request
                 req = requests.put(url='http://127.0.0.1:5000/return/{}'.format(choice))
+                if req.json()['event_id'] is not None:
+                    delete_event(req.json()['event_id'])
                 print("Success!")
                 time.sleep(2)
             else:

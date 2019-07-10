@@ -24,6 +24,7 @@ class Parser:
             self._HOST = configs['host']
             self._PORT = configs['port']
             self._EMAIL = configs['email']
+            self._CALENDAR_REMINDER = configs["days_to_be_reminded"]
 
     @property
     def host(self):
@@ -36,5 +37,9 @@ class Parser:
     @property
     def email(self):
         return self._EMAIL
+
+    @property
+    def calendar_reminder(self):
+        return self._CALENDAR_REMINDER
 
 

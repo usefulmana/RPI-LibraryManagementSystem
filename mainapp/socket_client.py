@@ -9,6 +9,7 @@ ADDRESS = (HOST, PORT)
 
 
 def socket_client():
+    """This function is used for testing purposes"""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print("Connecting to {}...".format(ADDRESS))
         s.connect(ADDRESS)

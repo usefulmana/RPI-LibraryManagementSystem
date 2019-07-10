@@ -57,12 +57,12 @@ class QRScanner:
         time.sleep(1)
         print("[INFO] starting video stream in 1...")
 
-        found = None
+        found = ''
 
         # loop over the frames from the video stream
         loop_count = 0
         # Try to scan for QR 10 times, if nothing shows up turn off camera
-        while loop_count < 10:
+        while loop_count < 6:
             loop_count += 1
             # grab the frame from the threaded video stream and resize it to
             # have a maximum width of 400 pixels
@@ -80,7 +80,6 @@ class QRScanner:
                 print("[FOUND] Type: {}, Data: {}".format(barcode_type, barcode_data))
                 # if the barcode text has not been seen before print it and update the set
                 found = barcode_data
-                print(found)
             if qr_parser.return_book_from_QR_code(found) and found is not None:
                 break
             # wait a little before scanning again

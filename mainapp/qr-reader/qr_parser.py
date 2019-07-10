@@ -1,5 +1,6 @@
 import requests
 import time
+from google_calendar_service import delete_event
 
 
 class QRParser:
@@ -37,21 +38,23 @@ class QRParser:
                 req = requests.get(url='http://127.0.0.1:5000/borrow/{}'.format(qr_data))
                 # Check if book is already returned
                 if req.json()['return_status'] == 'returned':
-                    print("This book is already returned. Transaction cancelled!")
+                    print("[INFO] This book is already returned. Transaction cancelled!")
                     time.sleep(2)
                     return True
                 else:
                     # Execute transaction
                     req = requests.put(url='http://127.0.0.1:5000/return/{}'.format(qr_data))
-                    print("Success!")
+                    if req.json()['event_id'] is not None:
+                        delete_event(req.json()['event_id'])
+                    print("[INFO] Success!")
                     time.sleep(2)
                     return True
             else:
-                print("Invalid QR code or no QR code found! Please try scanning again!")
+                print("[INFO] Invalid QR code or no QR code found! Please try again!")
                 time.sleep(2)
                 return True
         except ValueError:
-            print("QR code contains invalid information! Please try another code!")
+            print("[INFO] No QR code or QR code contains invalid information! Please try again!")
             time.sleep(2)
 
 

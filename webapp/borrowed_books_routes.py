@@ -14,8 +14,9 @@ class BorrowedBooks(db.Model):
     return_status = db.Column(db.Text)
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    event_id = db.Column(db.Text)
 
-    def __init__(self, book_id, user_id, borrow_date, due_date, return_date, borrow_status, return_status):
+    def __init__(self, book_id, user_id, borrow_date, due_date, return_date, borrow_status, return_status, event_id):
         self.book_id = book_id
         self.user_id = user_id
         self.borrow_date = borrow_date
@@ -23,11 +24,13 @@ class BorrowedBooks(db.Model):
         self.return_date = return_date
         self.borrow_status = borrow_status
         self.return_status = return_status
+        self.event_id = event_id
 
 
 class BorrowedBooksSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'book_id', 'user_id', 'borrow_date', 'due_date', 'return_date', 'borrow_status', 'return_status')
+        fields = ('id', 'book_id', 'user_id', 'borrow_date', 'due_date', 'return_date', 'borrow_status', 'return_status'
+                  , 'event_id')
 
 
 borrowed_book_schema = BorrowedBooksSchema()
@@ -52,6 +55,7 @@ def borrow_book(book_id, user_id):
     Use this route to execute a borrow transaction
     :param book_id: target book's id
     :param user_id: target user's id
+    :param event_id: google calendar '
     :return: a JSON containing transaction's information
     """
     borrow_date = datetime.now()
@@ -59,11 +63,22 @@ def borrow_book(book_id, user_id):
     borrow_status = "borrowed"
     return_status = None
     return_date = None
+    event_id = None
     # Create a new row
-    borrow = BorrowedBooks(book_id, user_id, borrow_date, due_date, return_date, borrow_status, return_status)
+    borrow = BorrowedBooks(book_id, user_id, borrow_date, due_date, return_date, borrow_status, return_status, event_id)
     db.session.add(borrow)
     db.session.commit()
     return borrowed_book_schema.jsonify(borrow)
+
+
+@app.route('/borrow/<borrow_id>/event/<event_id>', methods=['PUT'])
+@cross_origin()
+def put_event_id_into_borrow_information(borrow_id, event_id):
+    borrow = BorrowedBooks.query.get(borrow_id)
+    borrow.event_id = event_id
+    db.session.commit()
+    
+    return borrowed_book_schema.jsonify()
 
 
 @app.route('/return/<borrow_id>', methods=['PUT'])

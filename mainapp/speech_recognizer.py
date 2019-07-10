@@ -44,25 +44,24 @@ class SpeechRecognizer:
             # energy threshold based on the surrounding noise level
             r.adjust_for_ambient_noise(source)
 
-            print("Say a book's name or an author... ")
-            print("Mic open in 3... ")
+            print("[INFO] Say a book's name or an author... ")
+            print("[INFO] Mic open in 3... ")
             time.sleep(1)
-            print("Mic open in 2... ")
+            print("[INFO] Mic open in 2... ")
             time.sleep(1)
-            print("Mic open in 1... ")
+            print("[INFO] Mic open in 1... ")
             time.sleep(1)
-            print("Begin")
+            print("[INFO] Begin!")
             try:
-                audio = r.listen(source, timeout=1.5)
+                audio = r.listen(source, timeout=1.5, phrase_time_limit=10)
             except sr.WaitTimeoutError:
-                print("Listening timed out whilst waiting for phrase to start")
-                quit()
+                print("[INFO] Listening timed out whilst waiting for phrase to start")
             # recognize speech using Google Speech Recognition
             try:
                 text = r.recognize_google(audio_data=audio, language='us-EN')
-                print("You said '{}'".format(text))
+                print("[INFO] You said '{}'".format(text))
                 return text
             except sr.UnknownValueError:
-                print("Google Speech Recognition could not understand audio")
+                print("[INFO] Google Speech Recognition could not understand audio")
             except sr.RequestError as e:
-                print("Could not request results from Google Speech Recognition service; {0}".format(e))
+                print("[INFO] Could not request results from Google Speech Recognition service; {0}".format(e))

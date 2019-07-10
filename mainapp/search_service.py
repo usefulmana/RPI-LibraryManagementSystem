@@ -2,10 +2,12 @@ import requests
 from borrow import BorrowService
 import time
 from speech_recognizer import SpeechRecognizer
+from return_service import ReturnService
 
 
 class Search:
     _instance = None
+
     # Only one instance of this class should exist
     @staticmethod
     def get_instance():
@@ -31,7 +33,7 @@ class Search:
         :return: A JSON with a list of books which match the criteria
         """
 
-        if user_query.strip() == '':
+        if user_query == '':
             request = requests.get(url='http://127.0.0.1:5000/books')
         else:
             request = requests.get(url='http://127.0.0.1:5000/books/others/{}'.format(user_query.strip()))
@@ -72,7 +74,8 @@ class Search:
             print(format_string.format("", "ID", "Title", "Author", "Published Date(y/m/d)", "ISBN"))
             for r in data:
                 print(
-                    format_string.format(str(index), str(r["id"]), r["title"], r["author"], r["published_date"], r["ISBN"]))
+                    format_string.format(str(index), str(r["id"]), r["title"], r["author"], r["published_date"],
+                                         r["ISBN"]))
                 index += 1
         else:
             # If there is no match, return False to break loop to return to main menu
@@ -99,6 +102,15 @@ class Search:
             time.sleep(2)
 
     @staticmethod
+    def check_if_user_already_borrowed(user_email, name, book_id):
+        undue_books_list = ReturnService.get_instance().get_list_of_undue_books(user_email, name)
+        # return True if user already borrowed this book and have not returned
+        if any(book_id == book['book_id'] for book in undue_books_list):
+            return True
+        else:
+            return False
+
+    @staticmethod
     def display_search_menu(user_email, name):
         """
         Displaying the search and borrow menu
@@ -113,7 +125,7 @@ class Search:
             print("Please enter enter a book's title, author, or ISBN ")
             print("Leave blank and press Enter to view all books")
             user_query = input("Your input: ")
-            result = search.search_books(user_query)
+            result = search.search_books(user_query.strip())
             # If print functions return false, meaning no book matched the criteria => break loops
             if search.print_results(result) == False:
                 break
@@ -127,15 +139,26 @@ class Search:
                                                                         "Your choice: "
                     ).strip())
                     if choice == 1:
-                        book_id = input("Enter the ID of the book you'd like to borrow: ").strip()
-                        # If the id entered is correct, proceed to confirmation
-                        if search.check_book_exist(book_id) is not None:
-                            search.confirmation(search.check_book_exist(book_id), user_email, name)
-                            break
-                        else:
-                            # Return to main menu
-                            print("ID is invalid or does not exist!")
-                            break
+                        try:
+                            book_id = int(input("Enter the ID of the book you'd like to borrow: ").strip())
+                            # If the id entered is correct, proceed to confirmation
+                            if search.check_book_exist(
+                                    book_id) is not None and not search.check_if_user_already_borrowed(
+                                    user_email, name, book_id):
+                                search.confirmation(search.check_book_exist(book_id), user_email, name)
+                                break
+                            elif search.check_if_user_already_borrowed(user_email, name, book_id):
+                                print(
+                                    "You have already borrowed this book, and have not returned it.\n"
+                                    "Transaction cancelled")
+                                time.sleep(2)
+                                break
+                            else:
+                                # Return to main menu
+                                print("ID is invalid!")
+                                break
+                        except ValueError:
+                            print('Wrong value enter! Numbers only')
                     else:
                         print("Returning to main menu...")
                         time.sleep(2)
@@ -148,38 +171,48 @@ class Search:
         search = Search.get_instance()
         text = SpeechRecognizer.get_instance().record_and_decipher_audio()
         while True:
-
-            result = search.search_books(text)
-            # If print functions return false, meaning no book matched the criteria => break loops
-            if search.print_results(result) == False:
+            if text is None:
                 break
             else:
-                try:
-                    print("Choose an option")
-                    # Provide user with options to keep going or return to main menu
-                    choice = int(input(
-                        "1. Borrow a book" + "\n"
-                                             "2. Return to main menu" + "\n"
-                                                                        "Your choice: "
-                    ).strip())
-                    if choice == 1:
-                        book_id = input("Enter the ID of the book you'd like to borrow: ").strip()
-                        # If the id entered is correct, proceed to confirmation
-                        if search.check_book_exist(book_id) is not None:
-                            search.confirmation(search.check_book_exist(book_id), user_email, name)
-                            break
+                result = search.search_books(text)
+                # If print functions return false, meaning no book matched the criteria => break loops
+                if search.print_results(result) == False:
+                    break
+                else:
+                    try:
+                        print("Choose an option")
+                        # Provide user with options to keep going or return to main menu
+                        choice = int(input(
+                            "1. Borrow a book" + "\n"
+                                                 "2. Return to main menu" + "\n"
+                                                                            "Your choice: "
+                        ).strip())
+                        if choice == 1:
+                            book_id = input("Enter the ID of the book you'd like to borrow: ").strip()
+                            # If the id entered is correct, proceed to confirmation
+                            if search.check_book_exist(
+                                    book_id) is not None and not search.check_if_user_already_borrowed(
+                                    user_email, name, book_id):
+                                search.confirmation(search.check_book_exist(book_id), user_email, name)
+                                break
+                            elif search.check_if_user_already_borrowed(user_email, name, book_id):
+                                print(
+                                    "You have already borrowed this book, and have not returned it.\n "
+                                    "Transaction cancelled")
+                                time.sleep(2)
+                                break
+                            else:
+                                # Return to main menu
+                                print("ID is invalid or does not exist!")
+                                break
                         else:
-                            # Return to main menu
-                            print("ID is invalid or does not exist!")
+                            print("Returning to main menu...")
+                            time.sleep(2)
                             break
-                    else:
-                        print("Returning to main menu...")
-                        time.sleep(2)
-                        break
-                except Exception as e:
-                    print(e)
+                    except Exception as e:
+                        print(e)
 
 
 if __name__ == '__main__':
     search = Search.get_instance()
-    search.display_search_menu()
+    print(search.check_if_user_already_borrowed("nlbasni2010@gmail.com", "Alex", "1"))

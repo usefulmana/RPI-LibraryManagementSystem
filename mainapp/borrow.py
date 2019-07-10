@@ -33,10 +33,12 @@ class BorrowService:
         :return: a string to remind of the user of due date
         """
         user_id = BorrowService.get_instance().get_user_id_from_email(user_email, name)
+        # Check if user has already borrowed the book and has not returned
         req = requests.post('http://127.0.0.1:5000/borrow/{}/user/{}'.format(book_id, user_id))
         choice = input("Would you like to be reminded of the due date via Google Calendar (Y/n)? ")
         if choice.strip().upper() == 'Y':
-            event_insert(user_email)
+            new_req = requests.put(
+                'http://127.0.0.1:5000/borrow/{}/event/{}'.format(req.json()['id'], event_insert(user_email)))
         opt_in_qr = input("Would you like to use the Quick Return service (Y/n)? ")
         if opt_in_qr.strip().upper() == 'Y':
             qr_generator(req.json()['id'])

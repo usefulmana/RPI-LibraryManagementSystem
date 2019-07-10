@@ -74,7 +74,8 @@
     {
     "host": "<<Your Pi's IP Address>>",
     "port": <<Any port here>>,
-    "email": <<Your email address>>
+    "email": <<Your email address>>,
+    "days_to_be_reminded": <<days from due date>>
     }
     ````
     - The above email address in ````config.json```` will be used to send QR codes to users. I recommend turning off any security
