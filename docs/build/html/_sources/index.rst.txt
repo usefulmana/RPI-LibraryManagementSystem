@@ -40,23 +40,8 @@ Classic Authentication
 Face Recognition
 -------------------------
 
-The user can choose to use face recognition to log in instead of console-based
-authentication. At registration, the user is asked to take a picture of their face.
-This image is stored in Reception Pi and encoded using ``face_recognition`` API.
-The face encoding, in form of a numeric 1D array, is stored in database along with
-other credentials such as email, name and password.
-
-Upon logging in, an image of the person's face is captured and encoded. The resulted
-encoding is compared with those stored in database to find a match. If no match found,
-the person is recognised as Unknown and cannot be logged in to the system.
-
-``FaceEncoder`` class provides method to run face encoding for a single given image.
-Its instance can load images stored in local storage and run face encoding for each of them.
-
 .. autoclass:: authentication.facial_recognition.face_encoding.FaceEncoder
    :members:
-
-``FaceRecogniser`` class is used for running face recognition for authentication.
 
 .. autoclass:: authentication.facial_recognition.facial_recognition.FaceRecogniser
    :members:
@@ -68,6 +53,12 @@ Search a book
 -------------------------
 
 
+
+Speech recognition
++++++++++++++++++++++++++
+
+.. autoclass:: mainapp.speech_recognizer.SpeechRecognizer
+   :members:
 
 Borrow a book
 -------------------------
@@ -81,14 +72,24 @@ Return a book
 QR code scanning
 +++++++++++++++++++++++++
 
+.. automodule:: mainapp.qr_generator
+   :members:
+
+.. autoclass:: mainapp.qr_reader.qr_parser.QRParser
+   :members:
+
+.. autoclass:: mainapp.qr_reader.qr_scanner.QRScanner
+   :members:
+
+.. automodule:: mainapp.email_sender
+   :members:
 
 
-Database
+Web application
 =========================
 
-Members
--------------------------
+.. autoclass:: webapp.analytics.Analytics
+   :members:
 
-
-Books
--------------------------
+.. automodule:: webapp.borrowed_books_routes
+   :members:

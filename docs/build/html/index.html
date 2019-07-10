@@ -55,16 +55,6 @@
 </div>
 <div class="section" id="face-recognition">
 <h3>Face Recognition<a class="headerlink" href="#face-recognition" title="Permalink to this headline">¶</a></h3>
-<p>The user can choose to use face recognition to log in instead of console-based
-authentication. At registration, the user is asked to take a picture of their face.
-This image is stored in Reception Pi and encoded using <code class="docutils literal notranslate"><span class="pre">face_recognition</span></code> API.
-The face encoding, in form of a numeric 1D array, is stored in database along with
-other credentials such as email, name and password.</p>
-<p>Upon logging in, an image of the person’s face is captured and encoded. The resulted
-encoding is compared with those stored in database to find a match. If no match found,
-the person is recognised as Unknown and cannot be logged in to the system.</p>
-<p><code class="docutils literal notranslate"><span class="pre">FaceEncoder</span></code> class provides method to run face encoding for a single given image.
-Its instance can load images stored in local storage and run face encoding for each of them.</p>
 <dl class="class">
 <dt id="authentication.facial_recognition.face_encoding.FaceEncoder">
 <em class="property">class </em><code class="sig-prename descclassname">authentication.facial_recognition.face_encoding.</code><code class="sig-name descname">FaceEncoder</code><a class="headerlink" href="#authentication.facial_recognition.face_encoding.FaceEncoder" title="Permalink to this definition">¶</a></dt>
@@ -109,7 +99,6 @@ and encode each one of them</p>
 
 </dd></dl>
 
-<p><code class="docutils literal notranslate"><span class="pre">FaceRecogniser</span></code> class is used for running face recognition for authentication.</p>
 <dl class="class">
 <dt id="authentication.facial_recognition.facial_recognition.FaceRecogniser">
 <em class="property">class </em><code class="sig-prename descclassname">authentication.facial_recognition.facial_recognition.</code><code class="sig-name descname">FaceRecogniser</code><a class="headerlink" href="#authentication.facial_recognition.facial_recognition.FaceRecogniser" title="Permalink to this definition">¶</a></dt>
@@ -154,25 +143,167 @@ using face recognition</p>
 <h2>Library Features<a class="headerlink" href="#library-features" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="search-a-book">
 <h3>Search a book<a class="headerlink" href="#search-a-book" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="speech-recognition">
+<h4>Speech recognition<a class="headerlink" href="#speech-recognition" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="mainapp.speech_recognizer.SpeechRecognizer">
+<em class="property">class </em><code class="sig-prename descclassname">mainapp.speech_recognizer.</code><code class="sig-name descname">SpeechRecognizer</code><a class="headerlink" href="#mainapp.speech_recognizer.SpeechRecognizer" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This method will return an instance of SpeechRecognizer class</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of SpeechRecognizer class</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 </div>
 <div class="section" id="borrow-a-book">
 <h3>Borrow a book<a class="headerlink" href="#borrow-a-book" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="return-a-book">
 <h3>Return a book<a class="headerlink" href="#return-a-book" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="qr-code-scanning">
-<h4>QR code scanning<a class="headerlink" href="#qr-code-scanning" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="module-mainapp.qr_generator">
+<span id="qr-code-scanning"></span><h4>QR code scanning<a class="headerlink" href="#module-mainapp.qr_generator" title="Permalink to this headline">¶</a></h4>
+<dl class="function">
+<dt id="mainapp.qr_generator.qr_generator">
+<code class="sig-prename descclassname">mainapp.qr_generator.</code><code class="sig-name descname">qr_generator</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#mainapp.qr_generator.qr_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will take data and encode it into QR code. The QR code will be saved as a .png file in the root folder
+:param data: generic data
+:return: None</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mainapp.qr_reader.qr_parser.QRParser">
+<em class="property">class </em><code class="sig-prename descclassname">mainapp.qr_reader.qr_parser.</code><code class="sig-name descname">QRParser</code><a class="headerlink" href="#mainapp.qr_reader.qr_parser.QRParser" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="mainapp.qr_reader.qr_parser.QRParser.get_instance">
+<em class="property">static </em><code class="sig-name descname">get_instance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mainapp.qr_reader.qr_parser.QRParser.get_instance" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This method will return an instance of QRParser class</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of QRParser class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="mainapp.qr_reader.qr_parser.QRParser.return_book_from_QR_code">
+<em class="property">static </em><code class="sig-name descname">return_book_from_QR_code</code><span class="sig-paren">(</span><em class="sig-param">qr_code_data</em><span class="sig-paren">)</span><a class="headerlink" href="#mainapp.qr_reader.qr_parser.QRParser.return_book_from_QR_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the QR code and execute the transaction provided that the QR code is valid
+:param qr_code_data: QR data
+:return: True a condition to break loop</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mainapp.qr_reader.qr_scanner.QRScanner">
+<em class="property">class </em><code class="sig-prename descclassname">mainapp.qr_reader.qr_scanner.</code><code class="sig-name descname">QRScanner</code><a class="headerlink" href="#mainapp.qr_reader.qr_scanner.QRScanner" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="mainapp.qr_reader.qr_scanner.QRScanner.get_instance">
+<em class="property">static </em><code class="sig-name descname">get_instance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mainapp.qr_reader.qr_scanner.QRScanner.get_instance" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This method will return an instance of QRScanner class</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of QRScanner class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="mainapp.qr_reader.qr_scanner.QRScanner.scan_qr">
+<em class="property">static </em><code class="sig-name descname">scan_qr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mainapp.qr_reader.qr_scanner.QRScanner.scan_qr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate the camera and scan for QR code
+:return: Nothing</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mainapp.email_sender"></span><dl class="function">
+<dt id="mainapp.email_sender.send_email">
+<code class="sig-prename descclassname">mainapp.email_sender.</code><code class="sig-name descname">send_email</code><span class="sig-paren">(</span><em class="sig-param">user_email</em><span class="sig-paren">)</span><a class="headerlink" href="#mainapp.email_sender.send_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class will send an email with a QR code attached to users who choose to opt in the Quick Return service
+:param user_email: email of user
+:return: none</p>
+</dd></dl>
+
 </div>
 </div>
 </div>
-<div class="section" id="database">
-<h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="members">
-<h3>Members<a class="headerlink" href="#members" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="books">
-<h3>Books<a class="headerlink" href="#books" title="Permalink to this headline">¶</a></h3>
-</div>
+<div class="section" id="web-application">
+<h2>Web application<a class="headerlink" href="#web-application" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="webapp.analytics.Analytics">
+<em class="property">class </em><code class="sig-prename descclassname">webapp.analytics.</code><code class="sig-name descname">Analytics</code><a class="headerlink" href="#webapp.analytics.Analytics" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="webapp.analytics.Analytics.daily_plot">
+<em class="property">static </em><code class="sig-name descname">daily_plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#webapp.analytics.Analytics.daily_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw daily plot
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webapp.analytics.Analytics.get_instance">
+<em class="property">static </em><code class="sig-name descname">get_instance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#webapp.analytics.Analytics.get_instance" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This method will return an instance of Analytics class</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of Analytics class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="webapp.analytics.Analytics.get_statistics_for_a_day">
+<code class="sig-name descname">get_statistics_for_a_day</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#webapp.analytics.Analytics.get_statistics_for_a_day" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracting borrow and return history for a day and write it to a csv file
+:param filename: name of the target csv file
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webapp.analytics.Analytics.get_statistics_for_a_week">
+<code class="sig-name descname">get_statistics_for_a_week</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#webapp.analytics.Analytics.get_statistics_for_a_week" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return borrow &amp; return history of the last 7 days
+:param filename: name of the target csv file
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webapp.analytics.Analytics.plot_barplot">
+<em class="property">static </em><code class="sig-name descname">plot_barplot</code><span class="sig-paren">(</span><em class="sig-param">file</em>, <em class="sig-param">output_file</em><span class="sig-paren">)</span><a class="headerlink" href="#webapp.analytics.Analytics.plot_barplot" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Generate bar plot, can be used for both daily and weekly
+if the table has the same columns [‘date’, ‘borrows’, ‘returns’]</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> – path to CSV file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>pop up figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="webapp.analytics.Analytics.weekly_plot">
+<em class="property">static </em><code class="sig-name descname">weekly_plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#webapp.analytics.Analytics.weekly_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw weekly plot
+:return: none</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
