@@ -139,6 +139,7 @@ class Analytics:
             fig, ax = plt.subplots(1)
             sns.barplot(x='date', y='count', hue='type', data=daily_df, ax=ax)
         plt.savefig('images/' + output_file)
+        plt.clf()
 
 
 if __name__ == '__main__':
