@@ -50,6 +50,7 @@ class SpeechRecognizer:
             print("Mic open in 2... ")
             time.sleep(1)
             print("Mic open in 1... ")
+            time.sleep(1)
             print("Begin")
             try:
                 audio = r.listen(source, timeout=1.5)
