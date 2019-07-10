@@ -24,14 +24,12 @@ class Search:
             self._borrow_service = BorrowService.get_instance()
 
     @staticmethod
-    def search_books():
+    def search_books(user_query):
         """
         Take user input and find books in the library within given criteria
         :return: A JSON with a list of books which match the criteria
         """
-        print("Please enter enter a book's title, author, or ISBN ")
-        print("Leave blank and press Enter to view all books")
-        user_query = input("Your input: ")
+
         if user_query.strip() == '':
             request = requests.get(url='http://127.0.0.1:5000/books')
         else:
@@ -111,7 +109,10 @@ class Search:
         search = Search.get_instance()
         while True:
             # Ask user for input
-            result = search.search_books()
+            print("Please enter enter a book's title, author, or ISBN ")
+            print("Leave blank and press Enter to view all books")
+            user_query = input("Your input: ")
+            result = search.search_books(user_query)
             # If print functions return false, meaning no book matched the criteria => break loops
             if search.print_results(result) == False:
                 break

@@ -23,6 +23,7 @@ class Parser:
                 configs = json.load(file)
             self._HOST = configs['host']
             self._PORT = configs['port']
+            self._EMAIL = configs['email']
 
     @property
     def host(self):
@@ -31,5 +32,9 @@ class Parser:
     @property
     def port(self):
         return self._PORT
+
+    @property
+    def email(self):
+        return self._EMAIL
 
 

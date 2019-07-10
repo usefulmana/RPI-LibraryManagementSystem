@@ -39,7 +39,7 @@ class BorrowService:
             event_insert(user_email)
         opt_in_qr = input("Would you like to use the Quick Return service (Y/n)? ")
         if opt_in_qr.strip().upper() == 'Y':
-            qr_generator({"borrow_id": req.json()['id']})
+            qr_generator(req.json()['id'])
             send_email(user_email)
         return "Please return this book before: {}".format(req.json()['due_date'])
 

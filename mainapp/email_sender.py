@@ -7,6 +7,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+from config_parser import Parser
 
 
 def send_email(user_email):
@@ -15,7 +16,7 @@ def send_email(user_email):
     :param user_email: email of user
     :return: none
     """
-    fromaddr = "test.piot.314@gmail.com"
+    fromaddr = Parser.get_instance().email
     toaddr = user_email
     # instance of MIMEMultipart
     msg = MIMEMultipart()
