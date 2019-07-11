@@ -1,0 +1,404 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>PIoT - Library Management System &#8212; PIoT - Library Management System  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="piot-library-management-system">
+<h1>PIoT - Library Management System<a class="headerlink" href="#piot-library-management-system" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="classic-authentication">
+<h3>Classic Authentication<a class="headerlink" href="#classic-authentication" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="authentication.classic_login.Login.Login">
+<em class="property">class </em><code class="sig-prename descclassname">authentication.classic_login.Login.</code><code class="sig-name descname">Login</code><span class="sig-paren">(</span><em class="sig-param">db_username</em>, <em class="sig-param">db_password</em>, <em class="sig-param">database</em><span class="sig-paren">)</span><a class="headerlink" href="#authentication.classic_login.Login.Login" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="authentication.classic_login.Login.Login.classic_login">
+<code class="sig-name descname">classic_login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authentication.classic_login.Login.Login.classic_login" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Ask for user’s email and password. Compare input password with hashed one in database</dt><dd><p>Proceed to login if matched and no one is currently using that account, else return incorrect</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="authentication.classic_login.Register.Register">
+<em class="property">class </em><code class="sig-prename descclassname">authentication.classic_login.Register.</code><code class="sig-name descname">Register</code><span class="sig-paren">(</span><em class="sig-param">db_username</em>, <em class="sig-param">db_password</em>, <em class="sig-param">database</em><span class="sig-paren">)</span><a class="headerlink" href="#authentication.classic_login.Register.Register" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="authentication.classic_login.Register.Register.register">
+<code class="sig-name descname">register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authentication.classic_login.Register.Register.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register new account with gmail, name, and password (which is hashed then stored in database).
+After register, ask if user wants to take picture for facial recognition login.
+If yes, take picture and proceed to login.
+If no, proceed to login.
+:return: none</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-authentication.classic_login.TakePictures"></span><dl class="function">
+<dt id="authentication.classic_login.TakePictures.take_pictures">
+<code class="sig-prename descclassname">authentication.classic_login.TakePictures.</code><code class="sig-name descname">take_pictures</code><span class="sig-paren">(</span><em class="sig-param">email</em><span class="sig-paren">)</span><a class="headerlink" href="#authentication.classic_login.TakePictures.take_pictures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take user picture then store it to images folder
+Encode picture then store encoding to database
+:param email: registered user email
+:return: none</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="authentication.classic_login.ValidateInput.ValidateInput">
+<em class="property">class </em><code class="sig-prename descclassname">authentication.classic_login.ValidateInput.</code><code class="sig-name descname">ValidateInput</code><span class="sig-paren">(</span><em class="sig-param">db_username</em>, <em class="sig-param">db_password</em>, <em class="sig-param">database</em><span class="sig-paren">)</span><a class="headerlink" href="#authentication.classic_login.ValidateInput.ValidateInput" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="authentication.classic_login.ValidateInput.ValidateInput.validate_email">
+<code class="sig-name descname">validate_email</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authentication.classic_login.ValidateInput.ValidateInput.validate_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if user is using gmail to register, or if that gmail has already been used
+:return: email</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="authentication.classic_login.ValidateInput.ValidateInput.validate_password">
+<code class="sig-name descname">validate_password</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authentication.classic_login.ValidateInput.ValidateInput.validate_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if user’s password meets requirements
+:return: password</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="face-recognition">
+<h3>Face Recognition<a class="headerlink" href="#face-recognition" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="authentication.facial_recognition.face_encoding.FaceEncoder">
+<em class="property">class </em><code class="sig-prename descclassname">authentication.facial_recognition.face_encoding.</code><code class="sig-name descname">FaceEncoder</code><a class="headerlink" href="#authentication.facial_recognition.face_encoding.FaceEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="authentication.facial_recognition.face_encoding.FaceEncoder.encode_face">
+<em class="property">static </em><code class="sig-name descname">encode_face</code><span class="sig-paren">(</span><em class="sig-param">img</em>, <em class="sig-param">path=True</em><span class="sig-paren">)</span><a class="headerlink" href="#authentication.facial_recognition.face_encoding.FaceEncoder.encode_face" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Get encoding of the face in the given image</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> – image or path to image of face</p></li>
+<li><p><strong>path</strong> – boolean whether input is image or path</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>encoding of face in image, if no face found, raise error and finish</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="authentication.facial_recognition.face_encoding.FaceEncoder.load_data">
+<code class="sig-name descname">load_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authentication.facial_recognition.face_encoding.FaceEncoder.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch all images from “known” directory to dataframe
+and encode each one of them</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="authentication.facial_recognition.face_encoding.FaceEncoder.save_as_csv">
+<code class="sig-name descname">save_as_csv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authentication.facial_recognition.face_encoding.FaceEncoder.save_as_csv" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Save generated known faces dataframe as CSV file</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None, but face_db.csv file is created in the same directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="authentication.facial_recognition.facial_recognition.FaceRecogniser">
+<em class="property">class </em><code class="sig-prename descclassname">authentication.facial_recognition.facial_recognition.</code><code class="sig-name descname">FaceRecogniser</code><a class="headerlink" href="#authentication.facial_recognition.facial_recognition.FaceRecogniser" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="authentication.facial_recognition.facial_recognition.FaceRecogniser.load_face_encodings">
+<em class="property">static </em><code class="sig-name descname">load_face_encodings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authentication.facial_recognition.facial_recognition.FaceRecogniser.load_face_encodings" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Load information including person’s name and face encoding from CSV file</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>lists of names and face encodings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="authentication.facial_recognition.facial_recognition.FaceRecogniser.recognise_face">
+<code class="sig-name descname">recognise_face</code><span class="sig-paren">(</span><em class="sig-param">img</em>, <em class="sig-param">path=True</em><span class="sig-paren">)</span><a class="headerlink" href="#authentication.facial_recognition.facial_recognition.FaceRecogniser.recognise_face" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Check if the person in image is within the member database
+using face recognition</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> – input image or path to image</p></li>
+<li><p><strong>path</strong> – boolean whether input an image file or path to image file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>name/user ID of the person if existing in database, else ‘Unknown’</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="library-features">
+<h2>Library Features<a class="headerlink" href="#library-features" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="speech-recognition">
+<h3>Speech recognition<a class="headerlink" href="#speech-recognition" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="mainapp.speech_recognizer.SpeechRecognizer">
+<em class="property">class </em><code class="sig-prename descclassname">mainapp.speech_recognizer.</code><code class="sig-name descname">SpeechRecognizer</code><a class="headerlink" href="#mainapp.speech_recognizer.SpeechRecognizer" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This method will return an instance of SpeechRecognizer class</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of SpeechRecognizer class</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mainapp.qr_generator">
+<span id="qr-code-scanning"></span><h3>QR code scanning<a class="headerlink" href="#module-mainapp.qr_generator" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="mainapp.qr_generator.qr_generator">
+<code class="sig-prename descclassname">mainapp.qr_generator.</code><code class="sig-name descname">qr_generator</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#mainapp.qr_generator.qr_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will take data and encode it into QR code. The QR code will be saved as a .png file in the root folder
+:param data: generic data
+:return: None</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mainapp.qr_reader.qr_parser.QRParser">
+<em class="property">class </em><code class="sig-prename descclassname">mainapp.qr_reader.qr_parser.</code><code class="sig-name descname">QRParser</code><a class="headerlink" href="#mainapp.qr_reader.qr_parser.QRParser" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="mainapp.qr_reader.qr_parser.QRParser.get_instance">
+<em class="property">static </em><code class="sig-name descname">get_instance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mainapp.qr_reader.qr_parser.QRParser.get_instance" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This method will return an instance of QRParser class</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of QRParser class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="mainapp.qr_reader.qr_parser.QRParser.return_book_from_QR_code">
+<em class="property">static </em><code class="sig-name descname">return_book_from_QR_code</code><span class="sig-paren">(</span><em class="sig-param">qr_code_data</em><span class="sig-paren">)</span><a class="headerlink" href="#mainapp.qr_reader.qr_parser.QRParser.return_book_from_QR_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the QR code and execute the transaction provided that the QR code is valid
+:param qr_code_data: QR data
+:return: True a condition to break loop</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mainapp.qr_reader.qr_scanner.QRScanner">
+<em class="property">class </em><code class="sig-prename descclassname">mainapp.qr_reader.qr_scanner.</code><code class="sig-name descname">QRScanner</code><a class="headerlink" href="#mainapp.qr_reader.qr_scanner.QRScanner" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="mainapp.qr_reader.qr_scanner.QRScanner.get_instance">
+<em class="property">static </em><code class="sig-name descname">get_instance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mainapp.qr_reader.qr_scanner.QRScanner.get_instance" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This method will return an instance of QRScanner class</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of QRScanner class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="mainapp.qr_reader.qr_scanner.QRScanner.scan_qr">
+<em class="property">static </em><code class="sig-name descname">scan_qr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mainapp.qr_reader.qr_scanner.QRScanner.scan_qr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate the camera and scan for QR code
+:return: Nothing</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mainapp.email_sender"></span><dl class="function">
+<dt id="mainapp.email_sender.send_email">
+<code class="sig-prename descclassname">mainapp.email_sender.</code><code class="sig-name descname">send_email</code><span class="sig-paren">(</span><em class="sig-param">user_email</em><span class="sig-paren">)</span><a class="headerlink" href="#mainapp.email_sender.send_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class will send an email with a QR code attached to users who choose to opt in the Quick Return service
+:param user_email: email of user
+:return: none</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="web-application">
+<h2>Web application<a class="headerlink" href="#web-application" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="webapp.analytics.Analytics">
+<em class="property">class </em><code class="sig-prename descclassname">webapp.analytics.</code><code class="sig-name descname">Analytics</code><a class="headerlink" href="#webapp.analytics.Analytics" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="webapp.analytics.Analytics.daily_plot">
+<em class="property">static </em><code class="sig-name descname">daily_plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#webapp.analytics.Analytics.daily_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw daily plot
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webapp.analytics.Analytics.get_instance">
+<em class="property">static </em><code class="sig-name descname">get_instance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#webapp.analytics.Analytics.get_instance" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This method will return an instance of Analytics class</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of Analytics class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="webapp.analytics.Analytics.get_statistics_for_a_day">
+<code class="sig-name descname">get_statistics_for_a_day</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#webapp.analytics.Analytics.get_statistics_for_a_day" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracting borrow and return history for a day and write it to a csv file
+:param filename: name of the target csv file
+:return: none</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webapp.analytics.Analytics.get_statistics_for_a_week">
+<code class="sig-name descname">get_statistics_for_a_week</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#webapp.analytics.Analytics.get_statistics_for_a_week" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return borrow &amp; return history of the last 7 days
+:param filename: name of the target csv file
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="webapp.analytics.Analytics.plot_barplot">
+<em class="property">static </em><code class="sig-name descname">plot_barplot</code><span class="sig-paren">(</span><em class="sig-param">file</em>, <em class="sig-param">output_file</em><span class="sig-paren">)</span><a class="headerlink" href="#webapp.analytics.Analytics.plot_barplot" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Generate bar plot, can be used for both daily and weekly
+if the table has the same columns [‘date’, ‘borrows’, ‘returns’]</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> – path to CSV file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>pop up figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="webapp.analytics.Analytics.weekly_plot">
+<em class="property">static </em><code class="sig-name descname">weekly_plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#webapp.analytics.Analytics.weekly_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw weekly plot
+:return: none</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">PIoT - Library Management System</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team 3.14.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

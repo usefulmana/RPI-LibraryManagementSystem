@@ -3,9 +3,9 @@
 - Team: 3.14
 - Members:
     - Nguyen Le Bao Anh (s3616128)
-    -
-    -
-    -
+    - Tran Thi Hong Phuong (s3623386)
+    - Nguyen Quang Minh (s3639868)
+    - Huy Sam (s3665030)
 - Github: [Link](https://github.com/usefulmana/piot-a2-lms/tree/master)
 - REST API Endpoints: [Link](https://documenter.getpostman.com/view/7194228/SVSDPWbW?version=latest)
 - Description: this program will enable two Raspberry Pis to help managing a library. This system will be used to borrowed
