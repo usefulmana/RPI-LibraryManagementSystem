@@ -122,7 +122,7 @@ class Search:
         search = Search.get_instance()
         while True:
             # Ask user for input
-            print("Please enter enter a book's title, author, or ISBN ")
+            print("Please enter a book's title, author, or ISBN ")
             print("Leave blank and press Enter to view all books")
             user_query = input("Your input: ")
             result = search.search_books(user_query.strip())
@@ -157,8 +157,8 @@ class Search:
                                 # Return to main menu
                                 print("ID is invalid!")
                                 break
-                        except ValueError:
-                            print('Wrong value enter! Numbers only')
+                        except ValueError as val:
+                            print(val)
                     else:
                         print("Returning to main menu...")
                         time.sleep(2)

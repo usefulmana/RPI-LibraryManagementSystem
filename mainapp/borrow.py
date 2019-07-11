@@ -2,6 +2,7 @@ import requests
 from google_calendar_service import event_insert
 from qr_generator import qr_generator
 from email_sender import send_email
+import time
 
 
 class BorrowService:
@@ -35,10 +36,12 @@ class BorrowService:
         user_id = BorrowService.get_instance().get_user_id_from_email(user_email, name)
         # Check if user has already borrowed the book and has not returned
         req = requests.post('http://127.0.0.1:5000/borrow/{}/user/{}'.format(book_id, user_id))
-        choice = input("Would you like to be reminded of the due date via Google Calendar (Y/n)? ")
-        if choice.strip().upper() == 'Y':
+        g_cal_option = input("Would you like to be reminded of the due date via Google Calendar (Y/n)? ")
+        if g_cal_option.strip().upper() == 'Y':
             new_req = requests.put(
-                'http://127.0.0.1:5000/borrow/{}/event/{}'.format(req.json()['id'], event_insert(user_email, book_id, name)))
+                'http://127.0.0.1:5000/borrow/{}/event/{}'.format(req.json()['id'], event_insert(user_email, book_id,
+                                                                                                 name)))
+        time.sleep(2)
         opt_in_qr = input("Would you like to use the Quick Return service (Y/n)? ")
         if opt_in_qr.strip().upper() == 'Y':
             qr_generator(req.json()['id'])

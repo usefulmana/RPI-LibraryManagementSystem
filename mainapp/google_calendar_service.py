@@ -18,7 +18,7 @@ import base64
 import requests
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = "https://www.googleapis.com/auth/calendar"
+SCOPES = "https://www.googleapis.com/auth/calendar.events"
 store = file.Storage("token.json")
 creds = store.get()
 if (not creds or creds.invalid):
@@ -70,9 +70,10 @@ def event_insert(user_email, book_id, name):
     event = service.events().insert(calendarId="primary", body=event).execute()
     print("Event created! Please check your Google Calendar")
     # Extracting Google Calendar event ID
-    string = event.get("htmlLink")
-    split_string = string.split('=')
-    decoded_string = base64.b64decode(split_string[1])
+    string = event.get("htmlLink").split('=')[1]
+    lens = len(string)
+    lenx = lens - (lens % 4 if lens % 4 else 4)
+    decoded_string = base64.b64decode(string[:lenx])
     event_id = str(decoded_string).split(' ')[0][2:].strip()
     return event_id
 

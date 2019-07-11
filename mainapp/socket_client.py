@@ -2,7 +2,7 @@
 # Documentation: https://docs.python.org/3/library/socket.html
 import socket, socket_utils
 
-HOST = "192.168.0.12"
+HOST = "192.168.0.6"
 # HOST = "127.0.0.1" # The server's hostname or IP address.
 PORT = 64000       # The port used by the server.
 ADDRESS = (HOST, PORT)
@@ -21,7 +21,7 @@ def socket_client():
             #     socket_utils.sendJson(s, { "end": True })
             #     break
 
-        socket_utils.sendJson(s, {"user_email": "nlbasni2010@gmail.com", "name": "Alex", "status": "logged in"})
+        socket_utils.sendJson(s, {"user_email": "alex.nguyen3141@gmail.com", "name": "Alexa", "status": "logged in"})
         object = socket_utils.recvJson(s)
 
         print("Received:")
