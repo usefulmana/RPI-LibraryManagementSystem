@@ -8,18 +8,20 @@ class Book(db.Model):
     author = db.Column(db.Text)
     ISBN = db.Column(db.Text)
     published_date = db.Column(db.Date)
-    borrowed_books = db.relationship('BorrowedBooks')
+    quantity = db.Column(db.Integer)
+    borrowed_books = db.relationship('BorrowedBooks', lazy='dynamic', load_on_pending=True)
 
-    def __init__(self, title, author, ISBN, published_date):
+    def __init__(self, title, author, ISBN, published_date, quantity):
         self.title = title
         self.author = author
         self.ISBN = ISBN
         self.published_date = published_date
+        self.quantity = quantity
 
 
 class BookSchema(ma.Schema):
     class Meta:
-        fields = ("id", "title", "author", "ISBN", "published_date")
+        fields = ("id", "title", "author", "ISBN", "published_date", "quantity")
 
 
 book_Schema = BookSchema()
@@ -37,7 +39,8 @@ def add_book():
     author = request.json['author']
     ISBN = request.json['ISBN']
     published_date = request.json['published_date']
-    new_book = Book(title, author, ISBN, published_date)
+    quantity = request.json['quantity']
+    new_book = Book(title, author, ISBN, published_date, quantity)
     db.session.add(new_book)
     db.session.commit()
 

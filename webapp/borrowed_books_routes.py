@@ -2,6 +2,8 @@ from app import db, ma, app, cross_origin, request, jsonify
 from datetime import datetime, timedelta
 from config_parser import Parser
 import json
+import book_routes
+import pprint
 
 
 class BorrowedBooks(db.Model):
@@ -64,6 +66,7 @@ def borrow_book(book_id, user_id):
     return_status = None
     return_date = None
     event_id = None
+    # book = db.session.query(BorrowedBooks).join()
     # Create a new row
     borrow = BorrowedBooks(book_id, user_id, borrow_date, due_date, return_date, borrow_status, return_status, event_id)
     db.session.add(borrow)
@@ -77,7 +80,7 @@ def put_event_id_into_borrow_information(borrow_id, event_id):
     borrow = BorrowedBooks.query.get(borrow_id)
     borrow.event_id = event_id
     db.session.commit()
-    
+
     return borrowed_book_schema.jsonify()
 
 
@@ -107,7 +110,12 @@ def get_borrow_from_id(borrow_id):
     :param borrow_id: borrow's id
     :return: json with borrow's information
     """
-    borrow = BorrowedBooks.query.get(borrow_id)
+    # borrow = BorrowedBooks.query.get(borrow_id)
+    borrow = BorrowedBooks.query.filter(BorrowedBooks.id == borrow_id).first()
+    print(type(borrow))
+    print(borrow.__dict__)
+    pp = pprint
+    pp.pprint(borrow)
     return borrowed_book_schema.jsonify(borrow)
 
 

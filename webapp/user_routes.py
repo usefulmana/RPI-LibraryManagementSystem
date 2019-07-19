@@ -6,7 +6,7 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_email = db.Column(db.String(255), unique=True)
     name = db.Column(db.Text)
-    borrowed_books = db.relationship('BorrowedBooks')
+    borrowed_books = db.relationship('BorrowedBooks', lazy='dynamic', load_on_pending=True)
 
     def __init__(self, email, name):
         self.user_email = email
