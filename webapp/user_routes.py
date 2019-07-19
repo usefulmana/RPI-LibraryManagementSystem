@@ -39,7 +39,7 @@ def add_user():
         db.session.commit()
         return user_schema.jsonify(new_user)
     else:
-        return jsonify({"message": "Duplicate email address. Cancelled user creation!"})
+        return jsonify({"message": "Duplicate email address. Cancelled user creation!"}), 400
 
 
 @app.route('/users/byEmail/<email>', methods=['GET'])
@@ -51,4 +51,7 @@ def get_user_by_email(email):
     :return: a JSON containing the target's user information
     """
     user = Users.query.filter(Users.user_email == email).first()
-    return user_schema.jsonify(user)
+    if user is None:
+        return jsonify({"message": "User does not exist!"}), 400
+    else:
+        return user_schema.jsonify(user)

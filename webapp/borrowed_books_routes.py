@@ -2,7 +2,6 @@ from app import db, ma, app, cross_origin, request, jsonify
 from datetime import datetime, timedelta
 from config_parser import Parser
 import book_routes
-import requests
 import json
 
 
@@ -64,9 +63,9 @@ def borrow_book(book_id, user_id):
     borrow_history = BorrowedBooks.query.filter(BorrowedBooks.book_id == book_id, BorrowedBooks.user_id == user_id,
                                                 BorrowedBooks.return_status is None).first()
     if borrowed_book.quantity <= 0:
-        return jsonify({"message": "Out of stock"})
-    elif borrow_history:
-        return jsonify({"message": "Current user has already borrowed this book and has not returned it!"})
+        return jsonify({"message": "Out of stock"}), 400
+    elif borrow_history is None:
+        return jsonify({"message": "Current user has already borrowed this book and has not returned it!"}), 400
     else:
         borrow_date = datetime.now()
         due_date = days_to_return_book(borrow_date)
@@ -87,10 +86,13 @@ def borrow_book(book_id, user_id):
 @cross_origin()
 def put_event_id_into_borrow_information(borrow_id, event_id):
     borrow = BorrowedBooks.query.get(borrow_id)
-    borrow.event_id = event_id
-    db.session.commit()
+    if borrow is None:
+        return jsonify({"message": "ID does not exists!"})
+    else:
+        borrow.event_id = event_id
+        db.session.commit()
 
-    return borrowed_book_schema.jsonify()
+        return borrowed_book_schema.jsonify()
 
 
 @app.route('/return/<borrow_id>', methods=['PUT'])
@@ -102,15 +104,21 @@ def return_book(borrow_id):
     :return: a json containing information regarding this transaction
     """
     borrow = BorrowedBooks.query.get(borrow_id)
-    # switch return status to return
-    borrow.return_status = "returned"
-    # switch return date to current time
-    borrow.return_date = datetime.now()
-    borrowed_book = book_routes.Book.query.get(borrow.book_id)
-    borrowed_book.quantity += 1
-    db.session.commit()
+    if borrow is None:
+        return jsonify({"message": "No such ID exists!"}), 400
+    else:
+        if borrow.return_status == "returned":
+            return jsonify({"message": "Already returned"}), 400
+        else:
+            # switch return status to return
+            borrow.return_status = "returned"
+            # switch return date to current time
+            borrow.return_date = datetime.now()
+            borrowed_book = book_routes.Book.query.get(borrow.book_id)
+            borrowed_book.quantity += 1
+            db.session.commit()
 
-    return borrowed_book_schema.jsonify(borrow)
+            return borrowed_book_schema.jsonify(borrow)
 
 
 @app.route('/borrow/<borrow_id>')
@@ -122,7 +130,10 @@ def get_borrow_from_id(borrow_id):
     :return: json with borrow's information
     """
     borrow = BorrowedBooks.query.get(borrow_id)
-    return borrowed_book_schema.jsonify(borrow)
+    if borrow is None:
+        return jsonify({"message": "ID does not exists!"})
+    else:
+        return borrowed_book_schema.jsonify(borrow)
 
 
 @app.route('/borrow/user/<user_id>', methods=['GET'])
@@ -133,11 +144,14 @@ def get_all_undue_borrow_of_a_user(user_id):
     :param user_id:  target user's id
     :return: A JSON containing all undue books of a user
     """
-    borrow = BorrowedBooks.query.filter(BorrowedBooks.return_status == None).filter(
+    borrow = BorrowedBooks.query.filter(BorrowedBooks.return_status is None).filter(
         BorrowedBooks.user_id == user_id).all()
-    result = borrowed_books_schema.dump(borrow)
+    if len(borrow) == 0:
+        return jsonify({"message": "Borrow history is empty!"})
+    else:
+        result = borrowed_books_schema.dump(borrow)
 
-    return jsonify(result)
+        return jsonify(result)
 
 
 @app.route('/borrow/user/<user_id>/all', methods=['GET'])
@@ -149,6 +163,9 @@ def get_borrow_history_of_a_user(user_id):
     :return: A JSON with the list of borrow & return of the target user
     """
     borrow = BorrowedBooks.query.filter(BorrowedBooks.user_id == user_id).all()
-    result = borrowed_books_schema.dump(borrow)
+    if len(borrow) == 0:
+        return jsonify({"message": "Borrow history is empty!"})
+    else:
+        result = borrowed_books_schema.dump(borrow)
 
-    return jsonify(result)
+        return jsonify(result)

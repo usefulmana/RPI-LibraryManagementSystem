@@ -39,16 +39,20 @@ def add_book():
     Use this route to add a new book
     :return: a JSON with the book's information
     """
-    title = request.json['title']
-    author = request.json['author']
-    ISBN = request.json['ISBN']
-    published_date = request.json['published_date']
     quantity = request.json['quantity']
-    new_book = Book(title, author, ISBN, published_date, quantity)
-    db.session.add(new_book)
-    db.session.commit()
+    if type(quantity) is int and quantity > 0:
+        title = request.json['title']
+        author = request.json['author']
+        ISBN = request.json['ISBN']
+        published_date = request.json['published_date']
 
-    return book_Schema.jsonify(new_book)
+        new_book = Book(title, author, ISBN, published_date, quantity)
+        db.session.add(new_book)
+        db.session.commit()
+
+        return book_Schema.jsonify(new_book)
+    else:
+        return jsonify({"message": "Quantity cannot be zero or negative!"}), 400
 
 
 @app.route('/books', methods=['GET'])
@@ -96,7 +100,10 @@ def get_book_by_id(id):
     :return:
     """
     book = Book.query.get(id)
-    return book_Schema.jsonify(book)
+    if book is None:
+        return jsonify({"message": "ID does not exist!"}), 400
+    else:
+        return book_Schema.jsonify(book)
 
 
 @app.route('/books/<id>', methods=['DELETE'])
@@ -108,9 +115,12 @@ def delete_book(id):
     :return:
     """
     book = Book.query.get(id)
-    db.session.delete(book)
-    db.session.commit()
-    return book_Schema.jsonify(book)
+    if book is None:
+        return jsonify({"message": "ID does not exist!"}), 400
+    else:
+        db.session.delete(book)
+        db.session.commit()
+        return book_Schema.jsonify(book)
 
 
 @app.route('/books/<id>', methods=['PUT'])
@@ -122,13 +132,16 @@ def update_book(id):
     :return:
     """
     book = Book.query.get(id)
-    book.quantity = request.json['quantity']
-    book.title = request.json['title']
-    book.author = request.json['author']
-    book.published_date = request.json['published_date']
-    book.ISBN = request.json['ISBN']
-    db.session.commit()
-    return book_Schema.jsonify(book)
+    if book is None:
+        return jsonify({"message": "ID does not exist!"}), 400
+    else:
+        book.quantity = request.json['quantity']
+        book.title = request.json['title']
+        book.author = request.json['author']
+        book.published_date = request.json['published_date']
+        book.ISBN = request.json['ISBN']
+        db.session.commit()
+        return book_Schema.jsonify(book)
 
 
 @app.route('/books/others/<query>', methods=['GET'])
@@ -142,5 +155,8 @@ def search_book_by_query(query):
     books = Book.query.filter(
         Book.author.like("%{}%".format(query)) | Book.ISBN.like("%{}%".format(query)) | Book.title.like(
             "%{}%".format(query))).all()
-    result = books_Schema.dump(books)
-    return jsonify(result)
+    if books is None:
+        return jsonify({"message": "No matches!"})
+    else:
+        result = books_Schema.dump(books)
+        return jsonify(result)
