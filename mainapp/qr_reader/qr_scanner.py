@@ -15,7 +15,7 @@ import time
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 import cv2
-from qr_parser import QRParser
+from qr_reader.qr_parser import QRParser
 
 
 class QRScanner:

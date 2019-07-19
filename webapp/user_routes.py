@@ -51,7 +51,4 @@ def get_user_by_email(email):
     :return: a JSON containing the target's user information
     """
     user = Users.query.filter(Users.user_email == email).first()
-    if user is None:
-        return jsonify({"message": "User does not exist!"}), 400
-    else:
-        return user_schema.jsonify(user)
+    return user_schema.jsonify(user)

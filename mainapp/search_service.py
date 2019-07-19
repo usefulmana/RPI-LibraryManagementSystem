@@ -69,14 +69,20 @@ class Search:
         if data:
             # Added a counter for ease of use
             index = 1
-            format_string = "{:3s} {:8s} {:45s} {:25s} {:25s} {:20s}"
+            format_string = "{:3s} {:8s} {:45s} {:25s} {:25s} {:20s} {:20s}"
             print("*********************************************************")
-            print(format_string.format("", "ID", "Title", "Author", "Published Date(y/m/d)", "ISBN"))
+            print(format_string.format("", "ID", "Title", "Author", "Published Date(y/m/d)", "ISBN", "Status"))
             for r in data:
-                print(
-                    format_string.format(str(index), str(r["id"]), r["title"], r["author"], r["published_date"],
-                                         r["ISBN"]))
-                index += 1
+                if r['quantity'] != 0:
+                    print(
+                        format_string.format(str(index), str(r["id"]), r["title"], r["author"], r["published_date"],
+                                             r["ISBN"], "In stock"))
+                    index += 1
+                else:
+                    print(
+                        format_string.format(str(index), str(r["id"]), r["title"], r["author"], r["published_date"],
+                                             r["ISBN"], "Out of stock"))
+                    index += 1
         else:
             # If there is no match, return False to break loop to return to main menu
             print("No match found. Returning to main menu...")
@@ -94,6 +100,7 @@ class Search:
         choice = input("Is this correct (Y/n)? ").strip()
         if choice.upper() == 'Y':
             # Execute transaction if user's said Yes
+
             print(self._borrow_service.borrow(data['id'], user_email, name))
             print("Success!")
             time.sleep(3)
@@ -104,11 +111,27 @@ class Search:
     @staticmethod
     def check_if_user_already_borrowed(user_email, name, book_id):
         undue_books_list = ReturnService.get_instance().get_list_of_undue_books(user_email, name)
+        print(undue_books_list)
         # return True if user already borrowed this book and have not returned
-        if any(book_id == book['book_id'] for book in undue_books_list):
+        if any(book['message'] for book in undue_books_list):
+            return False
+        elif any(book_id == int(book['book_id']) for book in undue_books_list):
+            print('True')
             return True
+        # elif len(undue_books_list) == 0:
+        #     return False
+        #     print('f')
         else:
             return False
+            print('fda')
+
+    @staticmethod
+    def check_stock(book_id):
+        request = requests.get(url='http://127.0.0.1:5000/books/{}'.format(book_id))
+        print(request.json()['quantity'])
+        if request.json()['quantity'] > 0:
+            return True
+        return False
 
     @staticmethod
     def display_search_menu(user_email, name):
@@ -142,6 +165,8 @@ class Search:
                         try:
                             book_id = int(input("Enter the ID of the book you'd like to borrow: ").strip())
                             # If the id entered is correct, proceed to confirmation
+                            print(search.check_if_user_already_borrowed(
+                                    user_email, name, book_id))
                             if search.check_book_exist(
                                     book_id) is not None and not search.check_if_user_already_borrowed(
                                     user_email, name, book_id):
@@ -153,11 +178,15 @@ class Search:
                                     "Transaction cancelled")
                                 time.sleep(2)
                                 break
+                            elif not search.check_stock(book_id):
+                                print("Out of stock. Cancelling transaction!")
+                                time.sleep(3)
                             else:
                                 # Return to main menu
                                 print("ID is invalid!")
                                 break
                         except ValueError as val:
+                            print('fdas')
                             print(val)
                     else:
                         print("Returning to main menu...")
@@ -215,4 +244,4 @@ class Search:
 
 if __name__ == '__main__':
     search = Search.get_instance()
-    print(search.check_if_user_already_borrowed("nlbasni2010@gmail.com", "Alex", "1"))
+    search.display_search_menu('fdsa@gmail.com', "bob")

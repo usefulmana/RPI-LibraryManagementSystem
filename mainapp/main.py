@@ -3,7 +3,7 @@ from return_service import ReturnService
 import time
 import socket, socket_utils
 from config_parser import Parser
-from qr_scanner import QRScanner
+#from qr_reader.qr_scanner import QRScanner
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 HOST = Parser.get_instance().host
@@ -29,7 +29,7 @@ class Menu:
             raise Exception("This class is singleton")
         else:
             Menu._instance = self
-            self._qr_scanner = QRScanner.get_instance()
+            #self._qr_scanner = QRScanner.get_instance()
             self._search_service = Search.get_instance()
             self._return_service = ReturnService.get_instance()
 
@@ -59,7 +59,8 @@ class Menu:
                     if not self._return_service.return_book(user_email, name):
                         break
                 elif choice == 4:
-                    self._qr_scanner.scan_qr()
+                    pass
+                    # self._qr_scanner.scan_qr()
                 elif choice == 5:
                     self._search_service.search_by_voice(user_email, name)
                 elif choice == 6:
