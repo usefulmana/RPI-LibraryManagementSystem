@@ -1,4 +1,5 @@
 from app import db, ma, app, cross_origin, request, jsonify
+from sqlalchemy import CheckConstraint
 
 
 class Book(db.Model):
@@ -9,7 +10,10 @@ class Book(db.Model):
     ISBN = db.Column(db.Text)
     published_date = db.Column(db.Date)
     quantity = db.Column(db.Integer)
-    borrowed_books = db.relationship('BorrowedBooks', lazy='dynamic', load_on_pending=True)
+    borrowed_books = db.relationship('BorrowedBooks')
+    __table_args__ = (
+        CheckConstraint(quantity >= 0, name='check_quantity_positive'),
+        {})
 
     def __init__(self, title, author, ISBN, published_date, quantity):
         self.title = title
@@ -21,7 +25,7 @@ class Book(db.Model):
 
 class BookSchema(ma.Schema):
     class Meta:
-        fields = ("id", "title", "author", "ISBN", "published_date", "quantity")
+        fields = ("id", "title", "author", "ISBN", "published_date")
 
 
 book_Schema = BookSchema()
@@ -105,6 +109,24 @@ def delete_book(id):
     """
     book = Book.query.get(id)
     db.session.delete(book)
+    db.session.commit()
+    return book_Schema.jsonify(book)
+
+
+@app.route('/books/<id>', methods=['PUT'])
+@cross_origin()
+def update_book(id):
+    """
+    Delete a book based on its id
+    :param id: id of target book
+    :return:
+    """
+    book = Book.query.get(id)
+    book.quantity = request.json['quantity']
+    book.title = request.json['title']
+    book.author = request.json['author']
+    book.published_date = request.json['published_date']
+    book.ISBN = request.json['ISBN']
     db.session.commit()
     return book_Schema.jsonify(book)
 

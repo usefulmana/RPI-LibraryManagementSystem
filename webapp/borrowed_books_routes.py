@@ -1,9 +1,9 @@
 from app import db, ma, app, cross_origin, request, jsonify
 from datetime import datetime, timedelta
 from config_parser import Parser
-import json
 import book_routes
-import pprint
+import requests
+import json
 
 
 class BorrowedBooks(db.Model):
@@ -57,21 +57,30 @@ def borrow_book(book_id, user_id):
     Use this route to execute a borrow transaction
     :param book_id: target book's id
     :param user_id: target user's id
-    :param event_id: google calendar '
+    :param event_id: google calendar
     :return: a JSON containing transaction's information
     """
-    borrow_date = datetime.now()
-    due_date = days_to_return_book(borrow_date)
-    borrow_status = "borrowed"
-    return_status = None
-    return_date = None
-    event_id = None
-    # book = db.session.query(BorrowedBooks).join()
-    # Create a new row
-    borrow = BorrowedBooks(book_id, user_id, borrow_date, due_date, return_date, borrow_status, return_status, event_id)
-    db.session.add(borrow)
-    db.session.commit()
-    return borrowed_book_schema.jsonify(borrow)
+    borrowed_book = book_routes.Book.query.get(book_id)
+    borrow_history = BorrowedBooks.query.filter(BorrowedBooks.book_id == book_id, BorrowedBooks.user_id == user_id,
+                                                BorrowedBooks.return_status is None).first()
+    if borrowed_book.quantity <= 0:
+        return jsonify({"message": "Out of stock"})
+    elif borrow_history:
+        return jsonify({"message": "Current user has already borrowed this book and has not returned it!"})
+    else:
+        borrow_date = datetime.now()
+        due_date = days_to_return_book(borrow_date)
+        borrow_status = "borrowed"
+        return_status = None
+        return_date = None
+        event_id = None
+        borrowed_book.quantity -= 1
+        # Create a new row
+        borrow = BorrowedBooks(book_id, user_id, borrow_date, due_date, return_date, borrow_status, return_status,
+                               event_id)
+        db.session.add(borrow)
+        db.session.commit()
+        return borrowed_book_schema.jsonify(borrow)
 
 
 @app.route('/borrow/<borrow_id>/event/<event_id>', methods=['PUT'])
@@ -97,6 +106,8 @@ def return_book(borrow_id):
     borrow.return_status = "returned"
     # switch return date to current time
     borrow.return_date = datetime.now()
+    borrowed_book = book_routes.Book.query.get(borrow.book_id)
+    borrowed_book.quantity += 1
     db.session.commit()
 
     return borrowed_book_schema.jsonify(borrow)
@@ -110,12 +121,7 @@ def get_borrow_from_id(borrow_id):
     :param borrow_id: borrow's id
     :return: json with borrow's information
     """
-    # borrow = BorrowedBooks.query.get(borrow_id)
-    borrow = BorrowedBooks.query.filter(BorrowedBooks.id == borrow_id).first()
-    print(type(borrow))
-    print(borrow.__dict__)
-    pp = pprint
-    pp.pprint(borrow)
+    borrow = BorrowedBooks.query.get(borrow_id)
     return borrowed_book_schema.jsonify(borrow)
 
 

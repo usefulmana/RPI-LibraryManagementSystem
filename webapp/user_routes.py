@@ -1,4 +1,5 @@
-from app import db, ma,app, cross_origin, request
+
+from app import db, ma,app, cross_origin, request, jsonify
 
 
 class Users(db.Model):
@@ -6,7 +7,7 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_email = db.Column(db.String(255), unique=True)
     name = db.Column(db.Text)
-    borrowed_books = db.relationship('BorrowedBooks', lazy='dynamic', load_on_pending=True)
+    borrowed_books = db.relationship('BorrowedBooks')
 
     def __init__(self, email, name):
         self.user_email = email
@@ -31,11 +32,14 @@ def add_user():
     """
     user_email = request.json['user_email']
     name = request.json['name']
-    new_user = Users(user_email, name)
-    db.session.add(new_user)
-    db.session.commit()
-
-    return user_schema.jsonify(new_user)
+    user = Users.query.filter(Users.user_email == user_email).first()
+    if user is None:
+        new_user = Users(user_email, name)
+        db.session.add(new_user)
+        db.session.commit()
+        return user_schema.jsonify(new_user)
+    else:
+        return jsonify({"message": "Duplicate email address. Cancelled user creation!"})
 
 
 @app.route('/users/byEmail/<email>', methods=['GET'])
