@@ -155,8 +155,8 @@ def search_book_by_query(query):
     books = Book.query.filter(
         Book.author.like("%{}%".format(query)) | Book.ISBN.like("%{}%".format(query)) | Book.title.like(
             "%{}%".format(query))).all()
-    if books is None:
-        return jsonify({"message": "No matches!"})
+    if len(books) == 0:
+        return jsonify([{"message": "No matches!"}])
     else:
         result = books_Schema.dump(books)
         return jsonify(result)

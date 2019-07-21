@@ -53,7 +53,7 @@ def days_to_return_book(borrow_date):
 @cross_origin()
 def borrow_book(book_id, user_id):
     """
-    Use this route to execute a borrow transaction
+    Use this route to execute a borrow_a_book transaction
     :param book_id: target book's id
     :param user_id: target user's id
     :param event_id: google calendar
@@ -61,10 +61,10 @@ def borrow_book(book_id, user_id):
     """
     borrowed_book = book_routes.Book.query.get(book_id)
     borrow_history = BorrowedBooks.query.filter(BorrowedBooks.book_id == book_id, BorrowedBooks.user_id == user_id,
-                                                BorrowedBooks.return_status is None).first()
+                                                BorrowedBooks.return_status == None).first()
     if borrowed_book.quantity <= 0:
         return jsonify({"message": "Out of stock"}), 400
-    elif borrow_history is None:
+    elif borrow_history is not None:
         return jsonify({"message": "Current user has already borrowed this book and has not returned it!"}), 400
     else:
         borrow_date = datetime.now()
@@ -100,7 +100,7 @@ def put_event_id_into_borrow_information(borrow_id, event_id):
 def return_book(borrow_id):
     """
     use this route when user want to return the book
-    :param borrow_id: target borrow's id
+    :param borrow_id: target borrow_a_book's id
     :return: a json containing information regarding this transaction
     """
     borrow = BorrowedBooks.query.get(borrow_id)
@@ -125,9 +125,9 @@ def return_book(borrow_id):
 @cross_origin()
 def get_borrow_from_id(borrow_id):
     """
-    Get borrow info
-    :param borrow_id: borrow's id
-    :return: json with borrow's information
+    Get borrow_a_book info
+    :param borrow_id: borrow_a_book's id
+    :return: json with borrow_a_book's information
     """
     borrow = BorrowedBooks.query.get(borrow_id)
     if borrow is None:
@@ -144,10 +144,10 @@ def get_all_undue_borrow_of_a_user(user_id):
     :param user_id:  target user's id
     :return: A JSON containing all undue books of a user
     """
-    borrow = BorrowedBooks.query.filter(BorrowedBooks.return_status is None).filter(
-        BorrowedBooks.user_id == user_id).all()
+    borrow = BorrowedBooks.query.filter(BorrowedBooks.user_id == user_id, BorrowedBooks.return_status == None).all()
+    print(borrow)
     if len(borrow) == 0:
-        return jsonify({"message": "Borrow history is empty!"})
+        return jsonify([{"message": "No undue books!"}])
     else:
         result = borrowed_books_schema.dump(borrow)
 
@@ -158,13 +158,13 @@ def get_all_undue_borrow_of_a_user(user_id):
 @cross_origin()
 def get_borrow_history_of_a_user(user_id):
     """
-    Get borrow & return history of a user
+    Get borrow_a_book & return history of a user
     :param user_id: target user's id
-    :return: A JSON with the list of borrow & return of the target user
+    :return: A JSON with the list of borrow_a_book & return of the target user
     """
     borrow = BorrowedBooks.query.filter(BorrowedBooks.user_id == user_id).all()
     if len(borrow) == 0:
-        return jsonify({"message": "Borrow history is empty!"})
+        return jsonify([{"message": "Borrow history is empty!"}])
     else:
         result = borrowed_books_schema.dump(borrow)
 

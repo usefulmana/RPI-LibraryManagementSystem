@@ -15,7 +15,7 @@
 - **Master Pi**
     - Host the Flask REST API to communicate with the library's database.
     - Host a secured web server for admins to add and delete books, as well as viewing daily and weekly statistics.
-    - Host the main application where user will be able to search, borrow and return books.
+    - Host the main application where user will be able to search, borrow_a_book and return books.
     - Have an option for users to be reminded of the due date via Google Calendar.
     - Features a QR reader for quick return service.
     - A voice recognition feature to search for books.

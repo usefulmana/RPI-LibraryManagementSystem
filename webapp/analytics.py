@@ -35,7 +35,7 @@ class Analytics:
 
     def get_statistics_for_a_day(self, filename):
         """
-        Extracting borrow and return history for a day and write it to a csv file
+        Extracting borrow_a_book and return history for a day and write it to a csv file
         :param filename: name of the target csv file
         :return: none
         """
@@ -57,11 +57,11 @@ class Analytics:
                 sql3 = "SELECT current_date from borrowed_books"
                 cursor.execute(sql3)
                 result3 = cursor.fetchone()
-                final_result = {"date": result3[0], "borrow": result1[0], "return": result2[0]}
+                final_result = {"date": result3[0], "borrow_a_book": result1[0], "return": result2[0]}
                 with open(filename, 'w+', newline='') as daily_report:
                     writer = csv.writer(daily_report)
                     writer.writerow(["date", "borrows", "returns"])
-                    writer.writerow([final_result['date'], final_result["borrow"], final_result["return"]])
+                    writer.writerow([final_result['date'], final_result["borrow_a_book"], final_result["return"]])
                     daily_report.close()
         except Exception as e:
             print(e)
@@ -70,7 +70,7 @@ class Analytics:
 
     def get_statistics_for_a_week(self, filename):
         """
-        Return borrow & return history of the last 7 days
+        Return borrow_a_book & return history of the last 7 days
         :param filename: name of the target csv file
         :return:
         """

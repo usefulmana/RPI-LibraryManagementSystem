@@ -34,7 +34,7 @@ class QRParser:
         try:
             qr_data = int(qr_code_data)
             if qr_data > 0:
-                # Get the borrow's information from ID
+                # Get the borrow_a_book's information from ID
                 req = requests.get(url='http://127.0.0.1:5000/borrow/{}'.format(qr_data))
                 # Check if book is already returned
                 if req.json()['return_status'] == 'returned':

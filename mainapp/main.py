@@ -56,8 +56,7 @@ class Menu:
                 elif choice == 2:
                     self._search_service.display_search_menu(user_email, name)
                 elif choice == 3:
-                    if not self._return_service.return_book(user_email, name):
-                        break
+                    self._return_service.return_book(user_email, name)
                 elif choice == 4:
                     pass
                     # self._qr_scanner.scan_qr()

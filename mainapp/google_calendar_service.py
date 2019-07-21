@@ -14,6 +14,7 @@ from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 from config_parser import Parser
+import re
 import base64
 import requests
 
@@ -35,37 +36,40 @@ def event_insert(user_email, book_id, name):
     :param name: user's name
     :return: none
     """
-    date = datetime.now()
-    time = date.time().strftime('%H:%M:%S')
-    end = '{:%H:%M:%S}'.format(datetime.now() + timedelta(hours=1))
-    due_date = (date + timedelta(days=Parser.get_instance().calendar_reminder)).strftime("%Y-%m-%d")
-    time_start = "{}T{}+07:00".format(due_date, time)
-    time_end = "{}T{}+07:00".format(due_date, end)
-    readable_time_end = '{} {} GMT+07:00'.format(due_date, end)
-    req = requests.get(url='http://127.0.0.1:5000/books/{}'.format(book_id))
-    data = req.json()
-    event = {
-        "summary": "Reminder for {} to return {}".format(name, data['title']),
-        "location": "RMIT University Vietnam Library",
-        "description": "Please return {} to the University Library before {}".format(data['title'], readable_time_end),
-        "start": {
-            "dateTime": time_start,
-            "timeZone": "Asia/Ho_Chi_Minh",
-        },
-        "end": {
-            "dateTime": time_end,
-            "timeZone": "Asia/Ho_Chi_Minh",
-        },
-        "attendees": [
-            {"email": user_email},
-        ],
-        "reminders": {
-            "useDefault": False,
-            "overrides": [
-                {"method": "email", "minutes": 120},
-                {"method": "popup", "minutes": 60},
+    if g_mail_check(user_email) is None:
+        return None
+    else:
+        date = datetime.now()
+        time = date.time().strftime('%H:%M:%S')
+        end = '{:%H:%M:%S}'.format(datetime.now() + timedelta(hours=1))
+        due_date = (date + timedelta(days=Parser.get_instance().calendar_reminder)).strftime("%Y-%m-%d")
+        time_start = "{}T{}+07:00".format(due_date, time)
+        time_end = "{}T{}+07:00".format(due_date, end)
+        readable_time_end = '{} {} GMT+07:00'.format(due_date, end)
+        req = requests.get(url='http://127.0.0.1:5000/books/{}'.format(book_id))
+        data = req.json()
+        event = {
+            "summary": "Reminder for {} to return {}".format(name, data['title']),
+            "location": "RMIT University Vietnam Library",
+            "description": "Please return {} to the University Library before {}".format(data['title'], readable_time_end),
+            "start": {
+                "dateTime": time_start,
+                "timeZone": "Asia/Ho_Chi_Minh",
+            },
+            "end": {
+                "dateTime": time_end,
+                "timeZone": "Asia/Ho_Chi_Minh",
+            },
+            "attendees": [
+                {"email": user_email},
             ],
-        }
+            "reminders": {
+                "useDefault": False,
+                "overrides": [
+                    {"method": "email", "minutes": 120},
+                    {"method": "popup", "minutes": 60},
+                ],
+            }
     }
     event = service.events().insert(calendarId="primary", body=event).execute()
     print("Event created! Please check your Google Calendar")
@@ -76,6 +80,11 @@ def event_insert(user_email, book_id, name):
     decoded_string = base64.b64decode(string[:lenx])
     event_id = str(decoded_string).split(' ')[0][2:].strip()
     return event_id
+
+
+def g_mail_check(user_email):
+    regex = '^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$'
+    return re.search(regex, user_email)
 
 
 def delete_event(event_id):

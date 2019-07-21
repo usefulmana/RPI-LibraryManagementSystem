@@ -1,7 +1,8 @@
 import requests
-from borrow import BorrowService
+from borrow_service import BorrowService
 import time
 from google_calendar_service import delete_event
+from routes import get_undue_books_list_of_a_user, return_a_book_route
 
 
 class ReturnService:
@@ -31,8 +32,12 @@ class ReturnService:
         :return: a JSON file will include the list of undue books
         """
         user_id = self._borrow_service.get_user_id_from_email(user_email, name)
-        req = requests.get(url='http://127.0.0.1:5000/borrow/user/{}'.format(user_id))
-        return req.json()
+        req = requests.get(url=get_undue_books_list_of_a_user(user_id))
+        res = req.json()
+        if "message" in res[0].keys():
+            return None
+        else:
+            return res
 
     @staticmethod
     def print_list_of_undue_books(res):
@@ -61,19 +66,7 @@ class ReturnService:
             index += 1
 
     @staticmethod
-    def check_if_book_exist_in_borrow_history(user_input, data):
-        """
-        Check if user_input is entered the correct id
-        :param user_input: user's input
-        :param data: JSON file containing a list of user's undue book
-        :return: True if id does exist, False if not
-        """
-        for d in data:
-            if user_input == d['id']:
-                return True
-        return False
-
-    def return_book(self, user_email, name):
+    def return_book(user_email, name):
         """
         Displaying the return menu to user
         :param user_email:
@@ -83,27 +76,34 @@ class ReturnService:
         return_service = ReturnService.get_instance()
         # Getting list of user's undue books
         data = return_service.get_list_of_undue_books(user_email, name)
-        # print the list out
-        return_service.print_list_of_undue_books(data)
-        print("Enter an id corresponding to the book u wish to return")
-        print("Leave the field blank and press Enter to return main menu")
-        try:
-            choice = int(input("Your input: ").strip())
-            # Checking user's input
-            if return_service.check_if_book_exist_in_borrow_history(choice, data):
-                # If correct, execute return request
-                req = requests.put(url='http://127.0.0.1:5000/return/{}'.format(choice))
-                if req.json()['event_id'] is not None:
-                    delete_event(req.json()['event_id'])
-                print("Success!")
-                time.sleep(2)
-            else:
-                print("No such book exists in your borrow history!")
-                time.sleep(2)
-        except Exception as e:
-            print(e)
-        return True
+        if data is None:
+            print("You are currently not borrowing any book!")
+            print("Returning to main menu...")
+            time.sleep(3)
+        else:
+            return_service.print_list_of_undue_books(data)
+            print("Enter an id corresponding to the book u wish to return")
+            print("Leave the field blank and press Enter to return main menu")
+            try:
+                borrow_id = int(input("Your input: ").strip())
+                req = requests.put(url=return_a_book_route(borrow_id))
+                res = req.json()
+                if "message" in res.keys():
+                    print("Error: {}".format(res["message"]))
+                    print("Returning to main menu...")
+                    time.sleep(3)
+                else:
+                    if res['event_id'] is None:
+                        print("Success!")
+                        time.sleep(2)
+                    else:
+                        delete_event(req.json()['event_id'])
+                        print("Success!")
+                        time.sleep(2)
+            except Exception as e:
+                print(e)
 
 
 if __name__ == '__main__':
-    pass
+    service = ReturnService.get_instance()
+    service.return_book('fdsa@gmail.com', "bob")
