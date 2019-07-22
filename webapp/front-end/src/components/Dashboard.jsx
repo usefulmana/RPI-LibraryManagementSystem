@@ -22,7 +22,6 @@ export default class Dashboard extends Component {
   }
   onSubmit(e) {}
   toggle_form() {
-    // switch state when button is pressed
     this.setState({
       form_on: !this.state.form_on
     });
@@ -44,10 +43,9 @@ export default class Dashboard extends Component {
     };
     return (
       <div className="container">
-        
+
         <div>
-          <Link to='/daily_report'>Daily Report</Link> {" "}|{" "}
-          <Link to='/weekly_report'>Weekly Report</Link>
+          <Link to='/reports'>View Reports</Link>
         </div>
         <div>
           <button className="btn btn-primary mb-2 mt-3" onClick={this.toggle_form}>

@@ -9,8 +9,6 @@ import Dashboard from './components/Dashboard';
 import SearchResults from './components/SearchResults';
 import Reports from './components/Reports';
 import { ProtectedRoute } from './components/ProtectedRoute';
-import WeeklyReport from './components/WeeklyReport';
-import PageNotFound from './components/PageNotFound';
 
 function App() {
   return (
@@ -22,19 +20,16 @@ function App() {
           <hr className="w-50" />
         </div>
         <Switch>
-          {/* application's routes. Unprotected routes = Home & Login */}
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <ProtectedRoute exact path="/dashboard" component={Dashboard} />
-          <ProtectedRoute exact path="/daily_report" component={Reports}/>
-          <ProtectedRoute exact path="/weekly_report" component={WeeklyReport}/>
+          <ProtectedRoute exact path="/reports" component={Reports}/>
           <ProtectedRoute
             path="/search/:query?"
             component={props => (
               <SearchResults timestamp={new Date().toString()} {...props} />
             )}
           />
-          <Route path="*" component={PageNotFound}/>
         </Switch>
       </div>
     </Router>

@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { LOG_IN } from './rest_api_routes';
 
 export const login = user => {
   return axios
-    .post('http://127.0.0.1:5000/login', {
+    .post(LOG_IN, {
       username: user.username,
       password: user.password
     })
@@ -16,9 +17,9 @@ export const login = user => {
 };
 
 export const isAuthenticated = () => {
-    // check if user is authenticated
-    if(sessionStorage.getItem('usertoken') == null){
-      return false
-    }
-    return true
-}
+  if (sessionStorage.getItem('usertoken') == null) {
+    return false;
+  } else {
+    return true;
+  }
+};

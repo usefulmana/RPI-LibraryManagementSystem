@@ -42,17 +42,19 @@ export default class DataTable extends Component {
               <th scope="col">Author</th>
               <th scope="col">Published Date</th>
               <th scope="col">ISBN</th>
+              <th scope='col'>Stock</th>
               <th scope="col">Action(s)</th>
             </tr>
           </thead>
           <tbody>
             {this.state.pageOfItems.map(d => (
-              <tr>
+              <tr key={d.id}>
                 <td>{d.id}</td>
                 <td>{d.title}</td>
                 <td>{d.author}</td>
                 <td>{d.published_date}</td>
                 <td>{d.ISBN}</td>
+                <td>{d.quantity}</td>
                 <td>
                     <button className="btn btn-danger" onClick={this.handleDelete.bind(this,d.id)}> Delete </button>
                 </td>
