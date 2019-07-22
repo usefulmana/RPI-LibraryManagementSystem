@@ -9,13 +9,13 @@
 # import the necessary packages
 from imutils.video import VideoStream
 from pyzbar import pyzbar
+from qr_reader.qr_parser import QRParser
 import datetime
 import imutils
 import time
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 import cv2
-from qr_reader.qr_parser import QRParser
 
 
 class QRScanner:
@@ -68,7 +68,6 @@ class QRScanner:
             # have a maximum width of 400 pixels
             frame = vs.read()
             frame = imutils.resize(frame, width=400)
-
             # find the barcodes in the frame and decode each of the barcodes
             barcodes = pyzbar.decode(frame)
 
