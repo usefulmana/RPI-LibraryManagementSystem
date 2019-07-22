@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import JwPagination from 'jw-react-pagination'
 import { DELETE_BOOK } from './rest_api_routes';
+import { Link } from 'react-router-dom';
 
 export default class DataTable extends Component {
   constructor(props){
@@ -56,6 +57,7 @@ export default class DataTable extends Component {
                 <td>{d.ISBN}</td>
                 <td>{d.quantity}</td>
                 <td>
+                    <button className="btn btn-outline-primary mr-2"> <Link to={`/edit/${d.id}`}> Edit </Link></button>
                     <button className="btn btn-danger" onClick={this.handleDelete.bind(this,d.id)}> Delete </button>
                 </td>
               </tr>

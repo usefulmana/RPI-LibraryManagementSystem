@@ -109,11 +109,12 @@ export default class AddBookForm extends Component {
             />
           </div>
           <div className='form-group'>
-            <label htmlFor="">Published Date</label>
+            <label htmlFor="">Published Date (dd/MM/yyyy)</label>
             <br/>
             <DatePicker
                 selected={this.state.published_date}
                 onChange={this.handleChange}
+                dateFormat="dd/MM/yyyy"
                 required
             />
           </div>

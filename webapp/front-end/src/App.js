@@ -8,6 +8,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import SearchResults from './components/SearchResults';
 import Reports from './components/Reports';
+import EditBookForm from './components/EditBookForm';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -23,7 +24,8 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <ProtectedRoute exact path="/dashboard" component={Dashboard} />
-          <ProtectedRoute exact path="/reports" component={Reports}/>
+          <ProtectedRoute exact path="/reports" component={Reports} />
+          <ProtectedRoute path="/edit/:id" component={EditBookForm} />
           <ProtectedRoute
             path="/search/:query?"
             component={props => (

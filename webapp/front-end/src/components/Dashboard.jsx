@@ -20,7 +20,6 @@ export default class Dashboard extends Component {
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-  onSubmit(e) {}
   toggle_form() {
     this.setState({
       form_on: !this.state.form_on
